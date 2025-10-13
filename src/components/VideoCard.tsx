@@ -122,12 +122,12 @@ export default function VideoCard({
 
   return (
     <div className="relative h-screen w-full snap-start snap-always overflow-hidden flex items-center justify-center bg-background">
-      <div className="relative w-full max-w-[500px] h-full md:h-[calc(100vh-2rem)] md:max-h-[888px] flex items-center justify-center">
-        <div className="relative w-full h-full md:rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-background to-secondary/20">
+      <div className="relative w-full max-w-[500px] h-full flex items-center justify-center">
+        <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-primary/20 via-background to-secondary/20">
           <video
             ref={videoRef}
             src={videoUrl}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain"
             loop
             playsInline
             muted={isMuted}

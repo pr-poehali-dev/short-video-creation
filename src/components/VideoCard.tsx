@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import CommentsSheet from './CommentsSheet';
+import ShareSheet from './ShareSheet';
 
 interface VideoCardProps {
   id: number;
@@ -31,7 +32,29 @@ export default function VideoCard({
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showComments, setShowComments] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const parseDescription = (text: string) => {
+    const parts = text.split(/(#\w+)/g);
+    return parts.map((part, index) => {
+      if (part.startsWith('#')) {
+        return (
+          <span
+            key={index}
+            className="cursor-pointer font-semibold text-primary transition-colors hover:text-secondary"
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log('Hashtag clicked:', part);
+            }}
+          >
+            {part}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
 
   useEffect(() => {
     const video = videoRef.current;
@@ -163,7 +186,7 @@ export default function VideoCard({
                 {isFollowing ? 'Following' : 'Follow'}
               </Button>
             </div>
-            <p className="text-xs md:text-sm text-foreground/90">{description}</p>
+            <p className="text-xs md:text-sm text-foreground/90">{parseDescription(description)}</p>
           </div>
 
           <div className="absolute bottom-24 md:bottom-32 right-3 md:right-6 flex flex-col gap-4 md:gap-6">
@@ -201,7 +224,10 @@ export default function VideoCard({
               </span>
             </button>
 
-            <button className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95">
+            <button 
+              onClick={() => setShowShare(true)}
+              className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
+            >
               <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/30 backdrop-blur-sm">
                 <Icon name="Share2" size={22} className="text-white" />
               </div>
@@ -224,6 +250,13 @@ export default function VideoCard({
         onClose={() => setShowComments(false)}
         videoAuthor={author}
         totalComments={initialComments}
+      />
+
+      <ShareSheet
+        isOpen={showShare}
+        onClose={() => setShowShare(false)}
+        videoUrl={videoUrl}
+        videoTitle={`${author}: ${description.substring(0, 50)}...`}
       />
     </div>
   );

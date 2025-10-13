@@ -13,7 +13,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
 
   const navItems: { id: NavItem; icon: string; label: string }[] = [
     { id: 'feed', icon: 'Home', label: 'Feed' },
-    { id: 'search', icon: 'Search', label: 'Search' },
+    { id: 'search', icon: 'TrendingUp', label: 'Trends' },
     { id: 'upload', icon: 'PlusCircle', label: 'Upload' },
     { id: 'notifications', icon: 'Bell', label: 'Notifications' },
     { id: 'profile', icon: 'User', label: 'Profile' },

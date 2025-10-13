@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import VideoCard from '@/components/VideoCard';
 import BottomNav from '@/components/BottomNav';
 import UploadVideo from '@/components/UploadVideo';
+import TrendsSection from '@/components/TrendsSection';
 
 type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile';
 
@@ -102,35 +103,7 @@ export default function Index() {
       )}
 
       {activeTab === 'search' && (
-        <div className="flex h-screen items-center justify-center px-6">
-          <div className="w-full max-w-md space-y-6 animate-fade-in">
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary">
-                <svg className="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <h2 className="mb-2 font-['Orbitron'] text-2xl font-bold text-foreground">
-                Search Content
-              </h2>
-              <p className="text-muted-foreground">
-                Find creators, trends, and videos
-              </p>
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search for videos..."
-                className="w-full rounded-2xl border border-border bg-card/50 px-6 py-4 pr-12 text-foreground backdrop-blur-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-              />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                <svg className="h-6 w-6 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TrendsSection />
       )}
 
       {activeTab === 'upload' && (

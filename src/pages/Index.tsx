@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import VideoCard from '@/components/VideoCard';
 import BottomNav from '@/components/BottomNav';
+import UploadVideo from '@/components/UploadVideo';
 
-type NavItem = 'feed' | 'search' | 'trends' | 'notifications' | 'profile';
+type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile';
 
 const mockVideos = [
   {
@@ -130,6 +131,10 @@ export default function Index() {
             </div>
           </div>
         </div>
+      )}
+
+      {activeTab === 'upload' && (
+        <UploadVideo />
       )}
 
       {activeTab === 'trends' && (

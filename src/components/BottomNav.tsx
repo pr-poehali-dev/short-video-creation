@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
-type NavItem = 'feed' | 'search' | 'trends' | 'notifications' | 'profile';
+type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile';
 
 interface BottomNavProps {
   activeTab: NavItem;
@@ -14,7 +14,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const navItems: { id: NavItem; icon: string; label: string }[] = [
     { id: 'feed', icon: 'Home', label: 'Feed' },
     { id: 'search', icon: 'Search', label: 'Search' },
-    { id: 'trends', icon: 'TrendingUp', label: 'Trends' },
+    { id: 'upload', icon: 'PlusCircle', label: 'Upload' },
     { id: 'notifications', icon: 'Bell', label: 'Notifications' },
     { id: 'profile', icon: 'User', label: 'Profile' },
   ];
@@ -33,15 +33,25 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               }`}
             >
               <div className="relative">
-                <Icon
-                  name={item.icon}
-                  size={22}
-                  className={`transition-colors ${
+                {item.id === 'upload' ? (
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-full transition-all ${
                     activeTab === item.id
-                      ? 'text-primary'
-                      : 'text-foreground group-hover:text-primary'
-                  }`}
-                />
+                      ? 'bg-gradient-to-r from-primary via-secondary to-accent scale-110'
+                      : 'bg-gradient-to-r from-primary/70 via-secondary/70 to-accent/70'
+                  }`}>
+                    <Icon name={item.icon} size={26} className="text-white" />
+                  </div>
+                ) : (
+                  <Icon
+                    name={item.icon}
+                    size={22}
+                    className={`transition-colors ${
+                      activeTab === item.id
+                        ? 'text-primary'
+                        : 'text-foreground group-hover:text-primary'
+                    }`}
+                  />
+                )}
                 {item.id === 'notifications' && notificationCount > 0 && (
                   <div className="absolute -right-1 -top-1 flex h-3.5 w-3.5 md:h-4 md:w-4 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-[9px] md:text-[10px] font-bold text-white animate-pulse-glow">
                     {notificationCount}

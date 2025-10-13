@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import CommentsSheet from './CommentsSheet';
 
 interface VideoCardProps {
   id: number;
@@ -29,6 +30,7 @@ export default function VideoCard({
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [showComments, setShowComments] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -187,7 +189,10 @@ export default function VideoCard({
               </span>
             </button>
 
-            <button className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95">
+            <button 
+              onClick={() => setShowComments(true)}
+              className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
+            >
               <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/30 backdrop-blur-sm">
                 <Icon name="MessageCircle" size={22} className="text-white" />
               </div>
@@ -213,6 +218,13 @@ export default function VideoCard({
           </div>
         </div>
       </div>
+
+      <CommentsSheet
+        isOpen={showComments}
+        onClose={() => setShowComments(false)}
+        videoAuthor={author}
+        totalComments={initialComments}
+      />
     </div>
   );
 }

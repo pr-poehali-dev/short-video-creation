@@ -38,27 +38,27 @@ export default function LandingPage({ onLogin, onRegister }: LandingPageProps) {
       
       <div className="relative">
         <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+          <div className="max-w-7xl mx-auto px-3 md:px-6 py-3 md:py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center">
-                  <Icon name="Play" size={24} className="text-white" />
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="h-8 w-8 md:h-10 md:w-10 rounded-lg md:rounded-xl bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center">
+                  <Icon name="Play" size={18} className="text-white md:w-6 md:h-6" />
                 </div>
-                <h1 className="font-['Orbitron'] text-2xl font-black bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <h1 className="font-['Orbitron'] text-lg md:text-2xl font-black bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Peeky
                 </h1>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 md:gap-3">
                 <button
                   onClick={onLogin}
-                  className="px-6 py-2 rounded-full border border-border hover:bg-card/50 transition-all font-medium text-foreground"
+                  className="px-3 md:px-6 py-1.5 md:py-2 rounded-full border border-border hover:bg-card/50 transition-all font-medium text-foreground text-xs md:text-base"
                 >
                   Войти
                 </button>
                 <button
                   onClick={onRegister}
-                  className="px-6 py-2 rounded-full bg-gradient-to-r from-primary via-secondary to-accent text-white font-bold hover:opacity-90 transition-opacity"
+                  className="px-3 md:px-6 py-1.5 md:py-2 rounded-full bg-gradient-to-r from-primary via-secondary to-accent text-white font-bold hover:opacity-90 transition-opacity text-xs md:text-base whitespace-nowrap"
                 >
                   Регистрация
                 </button>

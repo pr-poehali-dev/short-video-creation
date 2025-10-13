@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import VideoCard from '@/components/VideoCard';
 import BottomNav from '@/components/BottomNav';
 
@@ -39,17 +39,61 @@ const mockVideos = [
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState<NavItem>('feed');
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef(0);
+  const touchEndY = useRef(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      touchEndY.current = e.changedTouches[0].clientY;
+      handleSwipe();
+    };
+
+    const handleSwipe = () => {
+      const diff = touchStartY.current - touchEndY.current;
+      const threshold = 50;
+
+      if (Math.abs(diff) > threshold) {
+        if (diff > 0 && currentVideoIndex < mockVideos.length - 1) {
+          setCurrentVideoIndex(currentVideoIndex + 1);
+          container?.children[currentVideoIndex + 1]?.scrollIntoView({ behavior: 'smooth' });
+        } else if (diff < 0 && currentVideoIndex > 0) {
+          setCurrentVideoIndex(currentVideoIndex - 1);
+          container?.children[currentVideoIndex - 1]?.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    };
+
+    container.addEventListener('touchstart', handleTouchStart);
+    container.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [currentVideoIndex]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-background">
-      <div className="absolute left-4 top-4 z-40 animate-fade-in">
-        <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-2xl font-black tracking-wider text-transparent">
+      <div className="absolute left-3 top-3 md:left-4 md:top-4 z-40 animate-fade-in">
+        <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-lg md:text-2xl font-black tracking-wider text-transparent">
           VIDEO PLATFORM
         </h1>
       </div>
 
       {activeTab === 'feed' && (
-        <div className="h-screen snap-y snap-mandatory overflow-y-scroll">
+        <div 
+          ref={containerRef}
+          className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
+        >
           {mockVideos.map((video) => (
             <VideoCard key={video.id} {...video} />
           ))}

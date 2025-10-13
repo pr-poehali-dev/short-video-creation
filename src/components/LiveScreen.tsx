@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
+import GiftsShop from '@/components/GiftsShop';
 
 interface LiveStream {
   id: number;
@@ -142,6 +143,8 @@ function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
     { id: 3, username: 'CoolViewer', text: 'Продолжай! 💜', time: '3м' },
   ]);
   const [isLiked, setIsLiked] = useState(false);
+  const [showGiftsShop, setShowGiftsShop] = useState(false);
+  const [giftAnimations, setGiftAnimations] = useState<Array<{ id: number; emoji: string; name: string }>>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -160,6 +163,25 @@ function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
       ]);
       setMessage('');
     }
+  };
+
+  const handleSendGift = (gift: any) => {
+    const newAnimation = { id: Date.now(), emoji: gift.emoji, name: gift.name };
+    setGiftAnimations([...giftAnimations, newAnimation]);
+    
+    setMessages([
+      ...messages,
+      { 
+        id: messages.length + 1, 
+        username: 'Вы', 
+        text: `Отправил(а) ${gift.name} ${gift.emoji}`, 
+        time: 'сейчас' 
+      },
+    ]);
+
+    setTimeout(() => {
+      setGiftAnimations((prev) => prev.filter((a) => a.id !== newAnimation.id));
+    }, 3000);
   };
 
   return (
@@ -221,12 +243,33 @@ function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
             <span className="text-xs font-bold text-white">324</span>
           </button>
 
+          <button 
+            onClick={() => setShowGiftsShop(true)}
+            className="flex flex-col items-center gap-1"
+          >
+            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 backdrop-blur-sm flex items-center justify-center animate-pulse-glow">
+              <Icon name="Gift" size={24} className="text-white" />
+            </div>
+          </button>
+
           <button className="flex flex-col items-center gap-1">
             <div className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
               <Icon name="Share2" size={24} className="text-white" />
             </div>
           </button>
         </div>
+
+        {giftAnimations.map((gift) => (
+          <div
+            key={gift.id}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl animate-bounce pointer-events-none"
+            style={{ 
+              animation: 'bounce 1s ease-in-out, fadeOut 3s ease-in-out',
+            }}
+          >
+            {gift.emoji}
+          </div>
+        ))}
 
         <div className="absolute bottom-0 left-0 right-0 p-4 pb-6">
           <div className="mb-4 max-h-48 overflow-y-auto scrollbar-hide space-y-2">
@@ -265,6 +308,13 @@ function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
           </div>
         </div>
       </div>
+
+      <GiftsShop
+        open={showGiftsShop}
+        onClose={() => setShowGiftsShop(false)}
+        onSendGift={handleSendGift}
+        recipientName={stream.username}
+      />
     </div>
   );
 }

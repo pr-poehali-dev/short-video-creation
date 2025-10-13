@@ -10,6 +10,8 @@ interface UserProfileProps {
   bio?: string;
   isOwnProfile?: boolean;
   onMessageClick?: () => void;
+  onAchievementsClick?: () => void;
+  onMonetizationClick?: () => void;
 }
 
 export default function UserProfile({
@@ -21,8 +23,12 @@ export default function UserProfile({
   bio,
   isOwnProfile = false,
   onMessageClick,
+  onAchievementsClick,
+  onMonetizationClick,
 }: UserProfileProps) {
   const [isFollowing, setIsFollowing] = useState(false);
+  const [userLevel] = useState(12);
+  const [userCoins] = useState(5000);
 
   const handleFollowToggle = () => {
     setIsFollowing(!isFollowing);
@@ -48,6 +54,38 @@ export default function UserProfile({
             
             {bio && (
               <p className="text-foreground text-sm mb-4">{bio}</p>
+            )}
+
+            {isOwnProfile && (
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                <button
+                  onClick={onAchievementsClick}
+                  className="rounded-2xl border border-border bg-gradient-to-br from-primary/10 to-secondary/10 p-4 hover:border-primary transition-all"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center">
+                      <span className="font-['Orbitron'] text-lg font-bold text-white">{userLevel}</span>
+                    </div>
+                    <div className="text-left">
+                      <p className="text-xs text-muted-foreground">Уровень</p>
+                      <p className="font-['Orbitron'] font-bold text-foreground">{userLevel}</p>
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={onMonetizationClick}
+                  className="rounded-2xl border border-border bg-gradient-to-br from-yellow-500/10 to-orange-500/10 p-4 hover:border-yellow-500 transition-all"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <Icon name="Coins" size={32} className="text-yellow-500" />
+                    <div className="text-left">
+                      <p className="text-xs text-muted-foreground">Монеты</p>
+                      <p className="font-['Orbitron'] font-bold text-foreground">{userCoins}</p>
+                    </div>
+                  </div>
+                </button>
+              </div>
             )}
 
             <div className="flex items-center gap-6 mb-6">

@@ -8,6 +8,8 @@ import UserProfile from '@/components/UserProfile';
 import StoriesBar from '@/components/StoriesBar';
 import StoryViewer from '@/components/StoryViewer';
 import LiveScreen from '@/components/LiveScreen';
+import AchievementsScreen from '@/components/AchievementsScreen';
+import MonetizationDashboard from '@/components/MonetizationDashboard';
 import Icon from '@/components/ui/icon';
 
 type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
@@ -51,6 +53,8 @@ export default function Index() {
   const [selectedUserProfile, setSelectedUserProfile] = useState<string | null>(null);
   const [selectedStory, setSelectedStory] = useState<any>(null);
   const [showLiveScreen, setShowLiveScreen] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
+  const [showMonetization, setShowMonetization] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
@@ -91,6 +95,34 @@ export default function Index() {
       container.removeEventListener('touchend', handleTouchEnd);
     };
   }, [currentVideoIndex]);
+
+  if (showAchievements) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        <button
+          onClick={() => setShowAchievements(false)}
+          className="absolute left-4 top-4 z-50 h-10 w-10 rounded-full bg-card/50 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-all"
+        >
+          <Icon name="ArrowLeft" size={24} />
+        </button>
+        <AchievementsScreen />
+      </div>
+    );
+  }
+
+  if (showMonetization) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        <button
+          onClick={() => setShowMonetization(false)}
+          className="absolute left-4 top-4 z-50 h-10 w-10 rounded-full bg-card/50 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-all"
+        >
+          <Icon name="ArrowLeft" size={24} />
+        </button>
+        <MonetizationDashboard />
+      </div>
+    );
+  }
 
   if (selectedStory) {
     return (
@@ -272,6 +304,8 @@ export default function Index() {
           videos={24}
           bio="🚀 Создатель контента | Техно-энтузиаст | Цифровой художник"
           isOwnProfile={true}
+          onAchievementsClick={() => setShowAchievements(true)}
+          onMonetizationClick={() => setShowMonetization(true)}
         />
       )}
 

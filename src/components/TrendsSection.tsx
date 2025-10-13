@@ -83,58 +83,60 @@ export default function TrendsSection() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center px-4 md:px-6">
-      <div className="w-full max-w-md space-y-4 animate-fade-in">
-        <div className="text-center mb-6">
-          <div className="mx-auto mb-4 flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent animate-pulse-glow">
-            <Icon name="TrendingUp" size={40} className="text-white" />
+    <div className="flex h-screen items-center justify-center px-3 md:px-6 py-4">
+      <div className="w-full max-w-md space-y-3 md:space-y-4 animate-fade-in">
+        <div className="text-center mb-4 md:mb-6">
+          <div className="mx-auto mb-3 md:mb-4 flex h-16 w-16 md:h-24 md:w-24 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent animate-pulse-glow">
+            <Icon name="TrendingUp" size={32} className="text-white md:w-10 md:h-10" />
           </div>
-          <h2 className="mb-2 font-['Orbitron'] text-xl md:text-2xl font-bold text-foreground">
+          <h2 className="mb-1 md:mb-2 font-['Orbitron'] text-lg md:text-2xl font-bold text-foreground">
             Актуальное сейчас
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs md:text-sm text-muted-foreground">
             Узнайте, что популярно в сообществе
           </p>
         </div>
 
-        <div className="space-y-3 max-h-[60vh] overflow-y-auto scrollbar-hide pr-2">
+        <div className="space-y-2 md:space-y-3 max-h-[65vh] md:max-h-[60vh] overflow-y-auto scrollbar-hide pr-1 md:pr-2">
           {trends.map((trend, index) => (
             <div
               key={trend.id}
-              className="group cursor-pointer rounded-2xl border border-border bg-card/30 p-4 backdrop-blur-sm transition-all hover:border-primary hover:bg-card/50 hover:scale-[1.02] active:scale-95 animate-fade-in"
+              className="group cursor-pointer rounded-xl md:rounded-2xl border border-border bg-card/30 p-3 md:p-4 backdrop-blur-sm transition-all hover:border-primary hover:bg-card/50 hover:scale-[1.02] active:scale-95 animate-fade-in"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 font-['Orbitron'] text-xl font-bold text-primary">
+              <div className="flex items-center gap-2 md:gap-4">
+                <div className="flex h-10 w-10 md:h-12 md:w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 font-['Orbitron'] text-base md:text-xl font-bold text-primary">
                   {index + 1}
                 </div>
 
-                <div className="flex-1">
-                  <div className="mb-1 flex items-center gap-2">
-                    <p className="font-['Orbitron'] text-base md:text-lg font-bold text-primary group-hover:text-secondary transition-colors">
+                <div className="flex-1 min-w-0">
+                  <div className="mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
+                    <p className="font-['Orbitron'] text-sm md:text-lg font-bold text-primary group-hover:text-secondary transition-colors truncate">
                       {trend.hashtag}
                     </p>
-                    <span className={`rounded-full bg-gradient-to-r ${getCategoryColor(trend.category)} px-2 py-0.5 text-[10px] font-bold text-white`}>
+                    <span className={`flex-shrink-0 rounded-full bg-gradient-to-r ${getCategoryColor(trend.category)} px-1.5 md:px-2 py-0.5 text-[9px] md:text-[10px] font-bold text-white`}>
                       {trend.category}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <Icon name="Eye" size={14} />
-                      <span>{trend.views} просмотров</span>
+                  <div className="flex items-center gap-2 md:gap-4 text-[10px] md:text-xs text-muted-foreground">
+                    <div className="flex items-center gap-0.5 md:gap-1">
+                      <Icon name="Eye" size={12} className="md:w-3.5 md:h-3.5" />
+                      <span className="hidden sm:inline">{trend.views} просмотров</span>
+                      <span className="sm:hidden">{trend.views}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Icon name="Video" size={14} />
-                      <span>{trend.posts.toLocaleString()} постов</span>
+                    <div className="flex items-center gap-0.5 md:gap-1">
+                      <Icon name="Video" size={12} className="md:w-3.5 md:h-3.5" />
+                      <span className="hidden sm:inline">{trend.posts.toLocaleString()} постов</span>
+                      <span className="sm:hidden">{trend.posts.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end gap-1">
-                  <div className="flex items-center gap-1 rounded-full bg-gradient-to-r from-green-500/20 to-green-400/20 px-2 py-1">
-                    <Icon name="TrendingUp" size={12} className="text-green-400" />
-                    <span className="font-['Orbitron'] text-xs font-bold text-green-400">
+                <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                  <div className="flex items-center gap-0.5 md:gap-1 rounded-full bg-gradient-to-r from-green-500/20 to-green-400/20 px-1.5 md:px-2 py-0.5 md:py-1">
+                    <Icon name="TrendingUp" size={10} className="text-green-400 md:w-3 md:h-3" />
+                    <span className="font-['Orbitron'] text-[10px] md:text-xs font-bold text-green-400">
                       +{trend.growth}%
                     </span>
                   </div>

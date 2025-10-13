@@ -290,15 +290,15 @@ export default function Index() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-background">
-      <div className="absolute left-3 top-3 md:left-4 md:top-4 z-40 animate-fade-in">
-        <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-lg md:text-2xl font-black tracking-wider text-transparent">
+      <div className="absolute left-3 top-2 md:left-4 md:top-4 z-40 animate-fade-in">
+        <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-base md:text-2xl font-black tracking-wider text-transparent">
           Peeky
         </h1>
       </div>
 
       {activeTab === 'feed' && (
         <>
-          <div className="absolute top-14 md:top-16 left-0 right-0 z-30">
+          <div className="absolute top-11 md:top-16 left-0 right-0 z-30">
             <StoriesBar
               onStoryClick={(story) => setSelectedStory(story)}
               onCreateStory={() => console.log('Create story')}
@@ -306,14 +306,14 @@ export default function Index() {
           </div>
           <button
             onClick={() => setShowLiveScreen(true)}
-            className="absolute top-20 md:top-24 right-4 z-30 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-2 hover:opacity-90 transition-opacity animate-pulse-glow"
+            className="absolute top-[110px] md:top-24 right-3 md:right-4 z-30 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1.5 md:gap-2 hover:opacity-90 transition-opacity animate-pulse-glow"
           >
-            <Icon name="Radio" size={18} className="text-white" />
-            <span className="text-xs font-bold text-white uppercase">Эфир</span>
+            <Icon name="Radio" size={16} className="text-white md:w-[18px] md:h-[18px]" />
+            <span className="text-[10px] md:text-xs font-bold text-white uppercase">Эфир</span>
           </button>
           <div 
             ref={containerRef}
-            className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide pt-24"
+            className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide pt-[140px] md:pt-24"
           >
             {mockVideos.map((video) => (
               <VideoCard 
@@ -328,23 +328,23 @@ export default function Index() {
 
       {activeTab === 'search' && (
         <div className="h-screen overflow-hidden bg-background">
-          <div className="flex items-center gap-2 px-4 pt-4 pb-2 border-b border-border">
+          <div className="flex items-center gap-2 px-3 md:px-4 pt-3 md:pt-4 pb-2 border-b border-border">
             <button
               onClick={() => setShowLeaderboard(true)}
-              className="flex-1 py-3 rounded-xl border border-border bg-card/50 hover:bg-card transition-all flex items-center justify-center gap-2"
+              className="flex-1 py-2.5 md:py-3 rounded-xl border border-border bg-card/50 hover:bg-card transition-all flex items-center justify-center gap-1.5 md:gap-2"
             >
-              <Icon name="Trophy" size={20} className="text-yellow-500" />
-              <span className="font-['Orbitron'] font-bold text-sm">Рейтинг</span>
+              <Icon name="Trophy" size={18} className="text-yellow-500 md:w-5 md:h-5" />
+              <span className="font-['Orbitron'] font-bold text-xs md:text-sm">Рейтинг</span>
             </button>
             <button
               onClick={() => setShowChallenges(true)}
-              className="flex-1 py-3 rounded-xl border border-border bg-card/50 hover:bg-card transition-all flex items-center justify-center gap-2"
+              className="flex-1 py-2.5 md:py-3 rounded-xl border border-border bg-card/50 hover:bg-card transition-all flex items-center justify-center gap-1.5 md:gap-2"
             >
-              <Icon name="Award" size={20} className="text-primary" />
-              <span className="font-['Orbitron'] font-bold text-sm">Конкурсы</span>
+              <Icon name="Award" size={18} className="text-primary md:w-5 md:h-5" />
+              <span className="font-['Orbitron'] font-bold text-xs md:text-sm">Конкурсы</span>
             </button>
           </div>
-          <div className="h-[calc(100vh-80px)] overflow-y-auto">
+          <div className="h-[calc(100vh-70px)] md:h-[calc(100vh-80px)] overflow-y-auto">
             <TrendsSection />
           </div>
         </div>
@@ -389,10 +389,10 @@ export default function Index() {
       )}
 
       {activeTab === 'notifications' && (
-        <div className="flex h-screen items-center justify-center px-6">
-          <div className="w-full max-w-md space-y-4 animate-fade-in">
-            <div className="text-center mb-8">
-              <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent relative">
+        <div className="flex h-screen items-center justify-center px-4 md:px-6">
+          <div className="w-full max-w-md space-y-3 md:space-y-4 animate-fade-in">
+            <div className="text-center mb-6 md:mb-8">
+              <div className="mx-auto mb-3 md:mb-4 flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent relative">
                 <svg className="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>

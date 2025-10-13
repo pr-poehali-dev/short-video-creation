@@ -3,8 +3,11 @@ import VideoCard from '@/components/VideoCard';
 import BottomNav from '@/components/BottomNav';
 import UploadVideo from '@/components/UploadVideo';
 import TrendsSection from '@/components/TrendsSection';
+import MessagesScreen from '@/components/MessagesScreen';
+import UserProfile from '@/components/UserProfile';
+import Icon from '@/components/ui/icon';
 
-type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile';
+type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
 
 const mockVideos = [
   {
@@ -42,6 +45,7 @@ const mockVideos = [
 export default function Index() {
   const [activeTab, setActiveTab] = useState<NavItem>('feed');
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [selectedUserProfile, setSelectedUserProfile] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
@@ -83,6 +87,32 @@ export default function Index() {
     };
   }, [currentVideoIndex]);
 
+  if (selectedUserProfile) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        <button
+          onClick={() => setSelectedUserProfile(null)}
+          className="absolute left-4 top-4 z-50 h-10 w-10 rounded-full bg-card/50 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-all"
+        >
+          <Icon name="ArrowLeft" size={24} />
+        </button>
+        <UserProfile
+          username={selectedUserProfile}
+          avatar={mockVideos.find(v => v.author === selectedUserProfile)?.authorAvatar || ''}
+          followers={Math.floor(Math.random() * 10000) + 1000}
+          following={Math.floor(Math.random() * 1000) + 100}
+          videos={Math.floor(Math.random() * 50) + 5}
+          bio="🎨 Digital creator | Tech enthusiast | Making awesome content"
+          isOwnProfile={false}
+          onMessageClick={() => {
+            setSelectedUserProfile(null);
+            setActiveTab('messages');
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-screen w-full overflow-hidden bg-background">
       <div className="absolute left-3 top-3 md:left-4 md:top-4 z-40 animate-fade-in">
@@ -97,7 +127,11 @@ export default function Index() {
           className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
         >
           {mockVideos.map((video) => (
-            <VideoCard key={video.id} {...video} />
+            <VideoCard 
+              key={video.id} 
+              {...video} 
+              onProfileClick={() => setSelectedUserProfile(video.author)}
+            />
           ))}
         </div>
       )}
@@ -187,38 +221,19 @@ export default function Index() {
       )}
 
       {activeTab === 'profile' && (
-        <div className="flex h-screen items-center justify-center px-6">
-          <div className="w-full max-w-md space-y-6 animate-fade-in">
-            <div className="text-center">
-              <div className="mx-auto mb-4 h-32 w-32 rounded-full border-4 border-primary bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-card">
-                  <span className="font-['Orbitron'] text-4xl font-bold text-primary">YU</span>
-                </div>
-              </div>
-              <h2 className="mb-1 font-['Orbitron'] text-2xl font-bold text-foreground">
-                Your Profile
-              </h2>
-              <p className="text-muted-foreground">@yourhandle</p>
-            </div>
-            <div className="grid grid-cols-3 gap-4 rounded-2xl border border-border bg-card/30 p-6 backdrop-blur-sm">
-              <div className="text-center">
-                <p className="font-['Orbitron'] text-2xl font-bold text-primary">24</p>
-                <p className="text-xs text-muted-foreground">Videos</p>
-              </div>
-              <div className="text-center">
-                <p className="font-['Orbitron'] text-2xl font-bold text-secondary">1.2K</p>
-                <p className="text-xs text-muted-foreground">Followers</p>
-              </div>
-              <div className="text-center">
-                <p className="font-['Orbitron'] text-2xl font-bold text-accent">856</p>
-                <p className="text-xs text-muted-foreground">Following</p>
-              </div>
-            </div>
-            <button className="w-full rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent py-4 font-['Orbitron'] font-bold text-white transition-all hover:opacity-90">
-              Edit Profile
-            </button>
-          </div>
-        </div>
+        <UserProfile
+          username="YourName"
+          avatar="https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg"
+          followers={1200}
+          following={856}
+          videos={24}
+          bio="🚀 Content creator | Tech enthusiast | Digital artist"
+          isOwnProfile={true}
+        />
+      )}
+
+      {activeTab === 'messages' && (
+        <MessagesScreen />
       )}
 
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />

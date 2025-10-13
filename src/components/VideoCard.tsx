@@ -14,6 +14,7 @@ interface VideoCardProps {
   shares: number;
   videoUrl: string;
   description: string;
+  onProfileClick?: () => void;
 }
 
 export default function VideoCard({
@@ -24,6 +25,7 @@ export default function VideoCard({
   shares,
   videoUrl,
   description,
+  onProfileClick,
 }: VideoCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(initialLikes);
@@ -162,14 +164,17 @@ export default function VideoCard({
 
           <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 pb-20 md:pb-24">
             <div className="mb-3 md:mb-4 flex items-center gap-2 md:gap-3">
-              <Avatar className="h-10 w-10 md:h-12 md:w-12 border-2 border-primary">
+              <Avatar 
+                className="h-10 w-10 md:h-12 md:w-12 border-2 border-primary cursor-pointer hover:border-secondary transition-colors"
+                onClick={onProfileClick}
+              >
                 <AvatarImage src={authorAvatar} alt={author} />
                 <AvatarFallback className="bg-primary/20 font-['Orbitron'] text-primary text-xs md:text-sm">
                   {author.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1">
-                <p className="font-['Orbitron'] text-xs md:text-sm font-semibold text-foreground">
+              <div className="flex-1 cursor-pointer" onClick={onProfileClick}>
+                <p className="font-['Orbitron'] text-xs md:text-sm font-semibold text-foreground hover:text-primary transition-colors">
                   {author}
                 </p>
               </div>

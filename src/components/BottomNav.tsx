@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
-type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile';
+type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
 
 interface BottomNavProps {
   activeTab: NavItem;
@@ -10,12 +10,13 @@ interface BottomNavProps {
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const [notificationCount] = useState(3);
+  const [messageCount] = useState(2);
 
   const navItems: { id: NavItem; icon: string; label: string }[] = [
     { id: 'feed', icon: 'Home', label: 'Feed' },
     { id: 'search', icon: 'TrendingUp', label: 'Trends' },
     { id: 'upload', icon: 'PlusCircle', label: 'Upload' },
-    { id: 'notifications', icon: 'Bell', label: 'Notifications' },
+    { id: 'messages', icon: 'MessageCircle', label: 'Messages' },
     { id: 'profile', icon: 'User', label: 'Profile' },
   ];
 
@@ -55,6 +56,11 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 {item.id === 'notifications' && notificationCount > 0 && (
                   <div className="absolute -right-1 -top-1 flex h-3.5 w-3.5 md:h-4 md:w-4 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-[9px] md:text-[10px] font-bold text-white animate-pulse-glow">
                     {notificationCount}
+                  </div>
+                )}
+                {item.id === 'messages' && messageCount > 0 && (
+                  <div className="absolute -right-1 -top-1 flex h-3.5 w-3.5 md:h-4 md:w-4 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary text-[9px] md:text-[10px] font-bold text-white animate-pulse-glow">
+                    {messageCount}
                   </div>
                 )}
               </div>

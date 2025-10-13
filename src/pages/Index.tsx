@@ -289,8 +289,8 @@ export default function Index() {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-background">
-      <div className="absolute left-3 top-2 md:left-4 md:top-4 z-40 animate-fade-in">
+    <div className="relative h-screen w-full overflow-hidden bg-background flex flex-col">
+      <div className="absolute left-3 top-2 md:left-4 md:top-3 z-40 animate-fade-in">
         <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-base md:text-2xl font-black tracking-wider text-transparent">
           Peeky
         </h1>
@@ -298,7 +298,7 @@ export default function Index() {
 
       {activeTab === 'feed' && (
         <>
-          <div className="absolute top-11 md:top-16 left-0 right-0 z-30">
+          <div className="flex-shrink-0 pt-10 md:pt-12 z-30">
             <StoriesBar
               onStoryClick={(story) => setSelectedStory(story)}
               onCreateStory={() => console.log('Create story')}
@@ -306,14 +306,14 @@ export default function Index() {
           </div>
           <button
             onClick={() => setShowLiveScreen(true)}
-            className="absolute top-[110px] md:top-24 right-3 md:right-4 z-30 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1.5 md:gap-2 hover:opacity-90 transition-opacity animate-pulse-glow"
+            className="absolute top-[94px] md:top-[100px] right-3 md:right-4 z-30 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 md:gap-1.5 hover:opacity-90 transition-opacity animate-pulse-glow"
           >
-            <Icon name="Radio" size={16} className="text-white md:w-[18px] md:h-[18px]" />
-            <span className="text-[10px] md:text-xs font-bold text-white uppercase">Эфир</span>
+            <Icon name="Radio" size={14} className="text-white md:w-4 md:h-4" />
+            <span className="text-[9px] md:text-xs font-bold text-white uppercase">Эфир</span>
           </button>
           <div 
             ref={containerRef}
-            className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide pt-[140px] md:pt-24"
+            className="flex-1 snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
           >
             {mockVideos.map((video) => (
               <VideoCard 

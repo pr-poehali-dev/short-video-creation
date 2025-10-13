@@ -5,6 +5,9 @@ import UploadVideo from '@/components/UploadVideo';
 import TrendsSection from '@/components/TrendsSection';
 import MessagesScreen from '@/components/MessagesScreen';
 import UserProfile from '@/components/UserProfile';
+import StoriesBar from '@/components/StoriesBar';
+import StoryViewer from '@/components/StoryViewer';
+import LiveScreen from '@/components/LiveScreen';
 import Icon from '@/components/ui/icon';
 
 type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
@@ -46,6 +49,8 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState<NavItem>('feed');
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [selectedUserProfile, setSelectedUserProfile] = useState<string | null>(null);
+  const [selectedStory, setSelectedStory] = useState<any>(null);
+  const [showLiveScreen, setShowLiveScreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
@@ -87,6 +92,29 @@ export default function Index() {
     };
   }, [currentVideoIndex]);
 
+  if (selectedStory) {
+    return (
+      <StoryViewer
+        story={selectedStory}
+        onClose={() => setSelectedStory(null)}
+      />
+    );
+  }
+
+  if (showLiveScreen) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        <button
+          onClick={() => setShowLiveScreen(false)}
+          className="absolute left-4 top-4 z-50 h-10 w-10 rounded-full bg-card/50 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-all"
+        >
+          <Icon name="ArrowLeft" size={24} />
+        </button>
+        <LiveScreen />
+      </div>
+    );
+  }
+
   if (selectedUserProfile) {
     return (
       <div className="relative h-screen w-full overflow-hidden bg-background">
@@ -122,18 +150,33 @@ export default function Index() {
       </div>
 
       {activeTab === 'feed' && (
-        <div 
-          ref={containerRef}
-          className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
-        >
-          {mockVideos.map((video) => (
-            <VideoCard 
-              key={video.id} 
-              {...video} 
-              onProfileClick={() => setSelectedUserProfile(video.author)}
+        <>
+          <div className="absolute top-14 md:top-16 left-0 right-0 z-30">
+            <StoriesBar
+              onStoryClick={(story) => setSelectedStory(story)}
+              onCreateStory={() => console.log('Create story')}
             />
-          ))}
-        </div>
+          </div>
+          <button
+            onClick={() => setShowLiveScreen(true)}
+            className="absolute top-20 md:top-24 right-4 z-30 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-2 hover:opacity-90 transition-opacity animate-pulse-glow"
+          >
+            <Icon name="Radio" size={18} className="text-white" />
+            <span className="text-xs font-bold text-white uppercase">Live</span>
+          </button>
+          <div 
+            ref={containerRef}
+            className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide pt-24"
+          >
+            {mockVideos.map((video) => (
+              <VideoCard 
+                key={video.id} 
+                {...video} 
+                onProfileClick={() => setSelectedUserProfile(video.author)}
+              />
+            ))}
+          </div>
+        </>
       )}
 
       {activeTab === 'search' && (

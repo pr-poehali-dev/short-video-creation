@@ -10,6 +10,8 @@ import StoryViewer from '@/components/StoryViewer';
 import LiveScreen from '@/components/LiveScreen';
 import AchievementsScreen from '@/components/AchievementsScreen';
 import MonetizationDashboard from '@/components/MonetizationDashboard';
+import LeaderboardScreen from '@/components/LeaderboardScreen';
+import ChallengesScreen from '@/components/ChallengesScreen';
 import LandingPage from '@/components/LandingPage';
 import AuthForm from '@/components/AuthForm';
 import Icon from '@/components/ui/icon';
@@ -65,6 +67,8 @@ export default function Index() {
   const [showLiveScreen, setShowLiveScreen] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showMonetization, setShowMonetization] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showChallenges, setShowChallenges] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
@@ -160,6 +164,34 @@ export default function Index() {
         onSwitchMode={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
         onBack={() => setAuthMode('landing')}
       />
+    );
+  }
+
+  if (showLeaderboard) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        <button
+          onClick={() => setShowLeaderboard(false)}
+          className="absolute left-4 top-4 z-50 h-10 w-10 rounded-full bg-card/50 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-all"
+        >
+          <Icon name="ArrowLeft" size={24} />
+        </button>
+        <LeaderboardScreen />
+      </div>
+    );
+  }
+
+  if (showChallenges) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        <button
+          onClick={() => setShowChallenges(false)}
+          className="absolute left-4 top-4 z-50 h-10 w-10 rounded-full bg-card/50 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-all"
+        >
+          <Icon name="ArrowLeft" size={24} />
+        </button>
+        <ChallengesScreen />
+      </div>
     );
   }
 
@@ -279,7 +311,27 @@ export default function Index() {
       )}
 
       {activeTab === 'search' && (
-        <TrendsSection />
+        <div className="h-screen overflow-hidden bg-background">
+          <div className="flex items-center gap-2 px-4 pt-4 pb-2 border-b border-border">
+            <button
+              onClick={() => setShowLeaderboard(true)}
+              className="flex-1 py-3 rounded-xl border border-border bg-card/50 hover:bg-card transition-all flex items-center justify-center gap-2"
+            >
+              <Icon name="Trophy" size={20} className="text-yellow-500" />
+              <span className="font-['Orbitron'] font-bold text-sm">Рейтинг</span>
+            </button>
+            <button
+              onClick={() => setShowChallenges(true)}
+              className="flex-1 py-3 rounded-xl border border-border bg-card/50 hover:bg-card transition-all flex items-center justify-center gap-2"
+            >
+              <Icon name="Award" size={20} className="text-primary" />
+              <span className="font-['Orbitron'] font-bold text-sm">Конкурсы</span>
+            </button>
+          </div>
+          <div className="h-[calc(100vh-80px)] overflow-y-auto">
+            <TrendsSection />
+          </div>
+        </div>
       )}
 
       {activeTab === 'upload' && (

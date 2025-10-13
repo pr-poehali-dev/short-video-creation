@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
@@ -26,6 +26,51 @@ export default function VideoCard({
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(initialLikes);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play();
+            setIsPlaying(true);
+          } else {
+            video.pause();
+            setIsPlaying(false);
+          }
+        });
+      },
+      { threshold: 0.7 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setIsMuted(!isMuted);
+  };
 
   const handleLike = () => {
     if (isLiked) {
@@ -39,14 +84,37 @@ export default function VideoCard({
   return (
     <div className="relative h-screen w-full snap-start snap-always overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 via-background to-secondary/20">
-        <img
+        <video
+          ref={videoRef}
           src={videoUrl}
-          alt="Video content"
           className="h-full w-full object-cover"
+          loop
+          playsInline
+          muted={isMuted}
+          onClick={togglePlay}
         />
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm animate-fade-in">
+            <Icon name="Play" size={40} className="text-white ml-1" />
+          </div>
+        </div>
+      )}
+
+      <button
+        onClick={toggleMute}
+        className="absolute right-6 top-20 flex h-10 w-10 items-center justify-center rounded-full bg-background/30 backdrop-blur-sm transition-all hover:scale-110 z-40"
+      >
+        <Icon
+          name={isMuted ? 'VolumeX' : 'Volume2'}
+          size={20}
+          className="text-white"
+        />
+      </button>
 
       <div className="absolute bottom-0 left-0 right-0 p-6 pb-24">
         <div className="mb-4 flex items-center gap-3">

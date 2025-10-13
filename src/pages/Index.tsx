@@ -10,6 +10,8 @@ import StoryViewer from '@/components/StoryViewer';
 import LiveScreen from '@/components/LiveScreen';
 import AchievementsScreen from '@/components/AchievementsScreen';
 import MonetizationDashboard from '@/components/MonetizationDashboard';
+import LandingPage from '@/components/LandingPage';
+import AuthForm from '@/components/AuthForm';
 import Icon from '@/components/ui/icon';
 
 type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
@@ -47,7 +49,15 @@ const mockVideos = [
   },
 ];
 
+interface User {
+  email: string;
+  username: string;
+}
+
 export default function Index() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [authMode, setAuthMode] = useState<'landing' | 'login' | 'register'>('landing');
   const [activeTab, setActiveTab] = useState<NavItem>('feed');
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [selectedUserProfile, setSelectedUserProfile] = useState<string | null>(null);
@@ -58,6 +68,43 @@ export default function Index() {
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('peeky_user');
+    const savedAuth = localStorage.getItem('peeky_auth');
+    
+    if (savedUser && savedAuth === 'true') {
+      try {
+        const user = JSON.parse(savedUser);
+        setCurrentUser(user);
+        setIsAuthenticated(true);
+      } catch (e) {
+        localStorage.removeItem('peeky_user');
+        localStorage.removeItem('peeky_auth');
+      }
+    }
+  }, []);
+
+  const handleAuth = (email: string, password: string, username?: string) => {
+    const user: User = {
+      email,
+      username: username || email.split('@')[0],
+    };
+    
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    localStorage.setItem('peeky_user', JSON.stringify(user));
+    localStorage.setItem('peeky_auth', 'true');
+    setAuthMode('landing');
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+    localStorage.removeItem('peeky_user');
+    localStorage.removeItem('peeky_auth');
+    setAuthMode('landing');
+  };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -95,6 +142,26 @@ export default function Index() {
       container.removeEventListener('touchend', handleTouchEnd);
     };
   }, [currentVideoIndex]);
+
+  if (!isAuthenticated) {
+    if (authMode === 'landing') {
+      return (
+        <LandingPage
+          onLogin={() => setAuthMode('login')}
+          onRegister={() => setAuthMode('register')}
+        />
+      );
+    }
+
+    return (
+      <AuthForm
+        mode={authMode === 'login' ? 'login' : 'register'}
+        onSubmit={handleAuth}
+        onSwitchMode={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
+        onBack={() => setAuthMode('landing')}
+      />
+    );
+  }
 
   if (showAchievements) {
     return (
@@ -296,17 +363,26 @@ export default function Index() {
       )}
 
       {activeTab === 'profile' && (
-        <UserProfile
-          username="YourName"
-          avatar="https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg"
-          followers={1200}
-          following={856}
-          videos={24}
-          bio="🚀 Создатель контента | Техно-энтузиаст | Цифровой художник"
-          isOwnProfile={true}
-          onAchievementsClick={() => setShowAchievements(true)}
-          onMonetizationClick={() => setShowMonetization(true)}
-        />
+        <div className="relative">
+          <button
+            onClick={handleLogout}
+            className="absolute right-4 top-4 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-border hover:bg-card transition-all"
+          >
+            <Icon name="LogOut" size={18} />
+            <span className="text-sm font-medium">Выйти</span>
+          </button>
+          <UserProfile
+            username={currentUser?.username || "YourName"}
+            avatar="https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg"
+            followers={1200}
+            following={856}
+            videos={24}
+            bio="🚀 Создатель контента | Техно-энтузиаст | Цифровой художник"
+            isOwnProfile={true}
+            onAchievementsClick={() => setShowAchievements(true)}
+            onMonetizationClick={() => setShowMonetization(true)}
+          />
+        </div>
       )}
 
       {activeTab === 'messages' && (

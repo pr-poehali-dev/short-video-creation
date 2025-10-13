@@ -130,7 +130,7 @@ export default function Index() {
           followers={Math.floor(Math.random() * 10000) + 1000}
           following={Math.floor(Math.random() * 1000) + 100}
           videos={Math.floor(Math.random() * 50) + 5}
-          bio="🎨 Digital creator | Tech enthusiast | Making awesome content"
+          bio="🎨 Цифровой создатель | Техно-энтузиаст | Создаю крутой контент"
           isOwnProfile={false}
           onMessageClick={() => {
             setSelectedUserProfile(null);
@@ -145,7 +145,7 @@ export default function Index() {
     <div className="relative h-screen w-full overflow-hidden bg-background">
       <div className="absolute left-3 top-3 md:left-4 md:top-4 z-40 animate-fade-in">
         <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-lg md:text-2xl font-black tracking-wider text-transparent">
-          VIDEO PLATFORM
+          Peeky
         </h1>
       </div>
 
@@ -162,7 +162,7 @@ export default function Index() {
             className="absolute top-20 md:top-24 right-4 z-30 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-2 hover:opacity-90 transition-opacity animate-pulse-glow"
           >
             <Icon name="Radio" size={18} className="text-white" />
-            <span className="text-xs font-bold text-white uppercase">Live</span>
+            <span className="text-xs font-bold text-white uppercase">Эфир</span>
           </button>
           <div 
             ref={containerRef}
@@ -197,7 +197,7 @@ export default function Index() {
                 </svg>
               </div>
               <h2 className="mb-2 font-['Orbitron'] text-2xl font-bold text-foreground">
-                Trending Now
+                Актуальное сейчас
               </h2>
             </div>
             {['#FutureTech', '#CyberVibes', '#NeonLife', '#DigitalArt', '#TechMusic'].map((tag, index) => (
@@ -210,7 +210,7 @@ export default function Index() {
                   <div>
                     <p className="font-['Orbitron'] text-lg font-bold text-primary">{tag}</p>
                     <p className="text-sm text-muted-foreground">
-                      {Math.floor(Math.random() * 500 + 100)}K views
+                      {Math.floor(Math.random() * 500 + 100)}К просмотров
                     </p>
                   </div>
                   <div className="text-2xl">🔥</div>
@@ -234,14 +234,14 @@ export default function Index() {
                 </div>
               </div>
               <h2 className="mb-2 font-['Orbitron'] text-2xl font-bold text-foreground">
-                Notifications
+                Уведомления
               </h2>
             </div>
             {[
-              { text: 'CyberCreator started following you', time: '2m ago', new: true },
-              { text: 'Your video reached 10K views!', time: '1h ago', new: true },
-              { text: 'NeonDancer liked your video', time: '3h ago', new: true },
-              { text: 'New trending hashtag: #FutureTech', time: '5h ago', new: false },
+              { text: 'CyberCreator подписался на вас', time: '2м назад', new: true },
+              { text: 'Ваше видео набрало 10К просмотров!', time: '1ч назад', new: true },
+              { text: 'NeonDancer оценил ваше видео', time: '3ч назад', new: true },
+              { text: 'Новый трендовый хештег: #FutureTech', time: '5ч назад', new: false },
             ].map((notif, index) => (
               <div
                 key={index}
@@ -270,7 +270,7 @@ export default function Index() {
           followers={1200}
           following={856}
           videos={24}
-          bio="🚀 Content creator | Tech enthusiast | Digital artist"
+          bio="🚀 Создатель контента | Техно-энтузиаст | Цифровой художник"
           isOwnProfile={true}
         />
       )}

@@ -50,10 +50,10 @@ export default function UploadVideo() {
             <Icon name="Upload" size={40} className="text-white" />
           </div>
           <h2 className="mb-2 font-['Orbitron'] text-xl md:text-2xl font-bold text-foreground">
-            Upload Video
+            Загрузка видео
           </h2>
           <p className="text-sm text-muted-foreground">
-            Share your creative content with the world
+            Поделитесь своим творчеством с миром
           </p>
         </div>
 
@@ -64,10 +64,10 @@ export default function UploadVideo() {
           >
             <Icon name="Video" size={48} className="mx-auto mb-4 text-muted-foreground" />
             <p className="mb-2 font-['Orbitron'] text-sm font-semibold text-foreground">
-              Click to select video
+              Нажмите для выбора видео
             </p>
             <p className="text-xs text-muted-foreground">
-              MP4, WebM, or MOV (max 100MB)
+              MP4, WebM или MOV (макс. 100MB)
             </p>
             <input
               ref={fileInputRef}
@@ -89,7 +89,7 @@ export default function UploadVideo() {
 
             <div className="space-y-3">
               <Textarea
-                placeholder="Add a description... (use #hashtags)"
+                placeholder="Добавьте описание... (используйте #хэштеги)"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="min-h-[100px] resize-none rounded-2xl border-border bg-card/50 font-['Inter'] text-sm backdrop-blur-sm focus:border-primary"
@@ -101,7 +101,7 @@ export default function UploadVideo() {
                   variant="outline"
                   className="flex-1 rounded-2xl border-border font-['Orbitron'] text-sm hover:bg-card/50"
                 >
-                  Cancel
+                  Отмена
                 </Button>
                 <Button
                   onClick={handleUpload}
@@ -111,12 +111,12 @@ export default function UploadVideo() {
                   {isUploading ? (
                     <>
                       <Icon name="Loader2" size={16} className="mr-2 animate-spin" />
-                      Uploading...
+                      Загрузка...
                     </>
                   ) : (
                     <>
                       <Icon name="Upload" size={16} className="mr-2" />
-                      Publish
+                      Опубликовать
                     </>
                   )}
                 </Button>
@@ -129,21 +129,21 @@ export default function UploadVideo() {
           <div className="mb-3 flex items-center gap-2">
             <Icon name="Info" size={18} className="text-primary" />
             <h3 className="font-['Orbitron'] text-sm font-semibold text-foreground">
-              Tips for best results
+              Советы для лучшего результата
             </h3>
           </div>
           <ul className="space-y-2 text-xs text-muted-foreground">
             <li className="flex gap-2">
               <span className="text-primary">•</span>
-              <span>Use vertical 9:16 format for better viewing</span>
+              <span>Используйте вертикальный формат 9:16</span>
             </li>
             <li className="flex gap-2">
               <span className="text-secondary">•</span>
-              <span>Add engaging hashtags to reach more people</span>
+              <span>Добавляйте хэштеги для большего охвата</span>
             </li>
             <li className="flex gap-2">
               <span className="text-accent">•</span>
-              <span>Keep videos under 60 seconds for maximum impact</span>
+              <span>Делайте видео до 60 секунд</span>
             </li>
           </ul>
         </div>

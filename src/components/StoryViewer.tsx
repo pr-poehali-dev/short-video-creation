@@ -170,13 +170,13 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
                   {story.username}
                 </p>
                 <p className="text-xs text-white/70">
-                  {story.isLive ? 'Live now' : '2h ago'}
+                  {story.isLive ? 'В эфире' : '2ч назад'}
                 </p>
               </div>
               {story.isLive && (
                 <div className="px-2 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 animate-pulse-glow">
                   <div className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-                  <span className="text-xs font-bold text-white uppercase">Live</span>
+                  <span className="text-xs font-bold text-white uppercase">Эфир</span>
                 </div>
               )}
             </div>
@@ -225,7 +225,7 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
             <div className="flex items-center gap-2 animate-fade-in">
               <input
                 type="text"
-                placeholder={`Reply to ${story.username}...`}
+                placeholder={`Ответить ${story.username}...`}
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendReply()}
@@ -244,7 +244,7 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
               onClick={() => setShowReplyInput(true)}
               className="w-full rounded-full border-2 border-white/30 bg-black/30 backdrop-blur-sm px-4 py-3 text-left text-white/70 hover:border-white/50 transition-colors"
             >
-              Send message...
+              Отправить сообщение...
             </button>
           )}
         </div>

@@ -63,12 +63,12 @@ export default function ShareSheet({
     },
     {
       id: 'copy',
-      name: 'Copy Link',
+      name: 'Скопировать ссылку',
       icon: 'Copy',
       color: 'from-primary to-secondary',
       action: () => {
         navigator.clipboard.writeText(videoUrl);
-        alert('Link copied to clipboard!');
+        alert('Ссылка скопирована в буфер обмена!');
         onClose();
       }
     }
@@ -84,7 +84,7 @@ export default function ShareSheet({
           <SheetTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Icon name="Share2" size={24} className="text-primary" />
-              <span className="font-['Orbitron'] text-lg font-bold">Share Video</span>
+              <span className="font-['Orbitron'] text-lg font-bold">Поделиться видео</span>
             </div>
             <button 
               onClick={onClose}
@@ -123,11 +123,11 @@ export default function ShareSheet({
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(videoUrl);
-                  alert('Link copied!');
+                  alert('Ссылка скопирована!');
                 }}
                 className="rounded-lg bg-primary/10 px-4 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
               >
-                Copy
+                Копировать
               </button>
             </div>
           </div>

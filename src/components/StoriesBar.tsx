@@ -62,7 +62,7 @@ export default function StoriesBar({ onStoryClick, onCreateStory }: StoriesBarPr
               <Icon name="Plus" size={24} className="text-primary group-hover:text-secondary transition-colors" />
             </div>
           </div>
-          <span className="text-xs text-muted-foreground font-medium">Create</span>
+          <span className="text-xs text-muted-foreground font-medium">Создать</span>
         </button>
 
         {mockStories.map((story) => (

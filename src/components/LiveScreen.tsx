@@ -20,28 +20,28 @@ const mockLiveStreams: LiveStream[] = [
     id: 1,
     username: 'CyberCreator',
     avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg',
-    title: 'Creating futuristic designs 🚀',
+    title: 'Создаю футуристические дизайны 🚀',
     viewers: 1234,
     thumbnail: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg',
-    category: 'Art & Design',
+    category: 'Искусство и дизайн',
   },
   {
     id: 2,
     username: 'NeonDancer',
     avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/f6887c05-c23f-48ba-9c37-f82ecfc71348.jpg',
-    title: 'Dance practice session ✨',
+    title: 'Тренировка танцев ✨',
     viewers: 856,
     thumbnail: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/f6887c05-c23f-48ba-9c37-f82ecfc71348.jpg',
-    category: 'Dance',
+    category: 'Танцы',
   },
   {
     id: 3,
     username: 'TechBeats',
     avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/b7be10cb-cafa-4dee-b9f7-6f4194b5c3c5.jpg',
-    title: 'Making beats live 🎵',
+    title: 'Создаю биты в прямом эфире 🎵',
     viewers: 2341,
     thumbnail: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/b7be10cb-cafa-4dee-b9f7-6f4194b5c3c5.jpg',
-    category: 'Music',
+    category: 'Музыка',
   },
 ];
 
@@ -58,10 +58,10 @@ export default function LiveScreen({ onStreamClick }: LiveScreenProps) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="font-['Orbitron'] text-2xl font-bold text-foreground mb-1">
-              Live Streams
+              Прямые эфиры
             </h1>
             <p className="text-sm text-muted-foreground">
-              {mockLiveStreams.length} creators streaming now
+              {mockLiveStreams.length} креаторов в эфире
             </p>
           </div>
           <button className="h-12 w-12 rounded-full bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center hover:opacity-90 transition-opacity animate-pulse-glow">
@@ -90,7 +90,7 @@ export default function LiveScreen({ onStreamClick }: LiveScreenProps) {
               
               <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-2 animate-pulse-glow">
                 <div className="h-2 w-2 rounded-full bg-white animate-pulse" />
-                <span className="text-xs font-bold text-white uppercase">Live</span>
+                <span className="text-xs font-bold text-white uppercase">Эфир</span>
               </div>
 
               <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm flex items-center gap-1">
@@ -137,9 +137,9 @@ interface LiveStreamViewerProps {
 function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
-    { id: 1, username: 'User123', text: 'Amazing stream! 🔥', time: '1m' },
-    { id: 2, username: 'TechFan', text: 'Love this!', time: '2m' },
-    { id: 3, username: 'CoolViewer', text: 'Keep it up! 💜', time: '3m' },
+    { id: 1, username: 'User123', text: 'Удивительный эфир! 🔥', time: '1м' },
+    { id: 2, username: 'TechFan', text: 'Обожаю!', time: '2м' },
+    { id: 3, username: 'CoolViewer', text: 'Продолжай! 💜', time: '3м' },
   ]);
   const [isLiked, setIsLiked] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -156,7 +156,7 @@ function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
     if (message.trim()) {
       setMessages([
         ...messages,
-        { id: messages.length + 1, username: 'You', text: message, time: 'now' },
+        { id: messages.length + 1, username: 'Вы', text: message, time: 'сейчас' },
       ]);
       setMessage('');
     }
@@ -198,7 +198,7 @@ function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
             <div className="flex items-center gap-2">
               <div className="px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-2 animate-pulse-glow">
                 <div className="h-2 w-2 rounded-full bg-white animate-pulse" />
-                <span className="text-xs font-bold text-white uppercase">Live</span>
+                <span className="text-xs font-bold text-white uppercase">Эфир</span>
               </div>
               <div className="px-3 py-1 rounded-full bg-black/30 backdrop-blur-sm flex items-center gap-1">
                 <Icon name="Eye" size={14} className="text-white" />
@@ -245,7 +245,7 @@ function LiveStreamViewer({ stream, onClose }: LiveStreamViewerProps) {
           <div className="flex items-center gap-2">
             <input
               type="text"
-              placeholder="Say something..."
+              placeholder="Напишите что-нибудь..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}

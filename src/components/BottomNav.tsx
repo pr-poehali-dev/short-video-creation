@@ -13,11 +13,11 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const [messageCount] = useState(2);
 
   const navItems: { id: NavItem; icon: string; label: string }[] = [
-    { id: 'feed', icon: 'Home', label: 'Feed' },
-    { id: 'search', icon: 'TrendingUp', label: 'Trends' },
-    { id: 'upload', icon: 'PlusCircle', label: 'Upload' },
-    { id: 'messages', icon: 'MessageCircle', label: 'Messages' },
-    { id: 'profile', icon: 'User', label: 'Profile' },
+    { id: 'feed', icon: 'Home', label: 'Лента' },
+    { id: 'search', icon: 'TrendingUp', label: 'Тренды' },
+    { id: 'upload', icon: 'PlusCircle', label: 'Загрузка' },
+    { id: 'messages', icon: 'MessageCircle', label: 'Чаты' },
+    { id: 'profile', icon: 'User', label: 'Профиль' },
   ];
 
   return (

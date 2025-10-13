@@ -53,15 +53,15 @@ export default function UserProfile({
             <div className="flex items-center gap-6 mb-6">
               <div className="text-center">
                 <p className="font-['Orbitron'] text-xl font-bold text-foreground">{videos}</p>
-                <p className="text-xs text-muted-foreground">Videos</p>
+                <p className="text-xs text-muted-foreground">Видео</p>
               </div>
               <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
                 <p className="font-['Orbitron'] text-xl font-bold text-foreground">{followers}</p>
-                <p className="text-xs text-muted-foreground">Followers</p>
+                <p className="text-xs text-muted-foreground">Подписчики</p>
               </div>
               <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
                 <p className="font-['Orbitron'] text-xl font-bold text-foreground">{following}</p>
-                <p className="text-xs text-muted-foreground">Following</p>
+                <p className="text-xs text-muted-foreground">Подписки</p>
               </div>
             </div>
 
@@ -75,7 +75,7 @@ export default function UserProfile({
                       : 'bg-gradient-to-r from-primary via-secondary to-accent text-white hover:opacity-90'
                   }`}
                 >
-                  {isFollowing ? 'Following' : 'Follow'}
+                  {isFollowing ? 'Подписан' : 'Подписаться'}
                 </button>
                 <button
                   onClick={onMessageClick}
@@ -88,7 +88,7 @@ export default function UserProfile({
 
             {isOwnProfile && (
               <button className="w-full rounded-2xl border border-border bg-card py-3 font-['Orbitron'] font-bold text-foreground hover:bg-card/70 transition-all">
-                Edit Profile
+                Редактировать профиль
               </button>
             )}
           </div>
@@ -96,7 +96,7 @@ export default function UserProfile({
           <div className="border-t border-border pt-6">
             <div className="flex items-center gap-2 mb-4">
               <Icon name="Grid" size={20} className="text-primary" />
-              <h2 className="font-['Orbitron'] font-bold text-foreground">Videos</h2>
+              <h2 className="font-['Orbitron'] font-bold text-foreground">Видео</h2>
             </div>
             
             <div className="grid grid-cols-3 gap-2">

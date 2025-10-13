@@ -33,27 +33,27 @@ export default function CommentsSheet({
       id: 1,
       author: 'TechEnthusiast',
       avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg',
-      text: 'This is absolutely amazing! 🔥 Love the aesthetic!',
+      text: 'Это просто потрясающе! 🔥 Обожаю эстетику!',
       likes: 124,
-      timeAgo: '2h ago',
+      timeAgo: '2ч назад',
       isLiked: false,
     },
     {
       id: 2,
       author: 'CreativeVibes',
       avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/f6887c05-c23f-48ba-9c37-f82ecfc71348.jpg',
-      text: 'Can you share how you made this? Tutorial please! 🙏',
+      text: 'Можешь поделиться, как ты это сделал? Туториал, пожалуйста! 🙏',
       likes: 89,
-      timeAgo: '4h ago',
+      timeAgo: '4ч назад',
       isLiked: false,
     },
     {
       id: 3,
       author: 'NeonDreamer',
       avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/b7be10cb-cafa-4dee-b9f7-6f4194b5c3c5.jpg',
-      text: 'Pure talent right here 💜 Keep creating!',
+      text: 'Чистый талант! 💜 Продолжай творить!',
       likes: 56,
-      timeAgo: '6h ago',
+      timeAgo: '6ч назад',
       isLiked: true,
     },
   ]);
@@ -77,11 +77,11 @@ export default function CommentsSheet({
 
     const comment: Comment = {
       id: Date.now(),
-      author: 'You',
+      author: 'Вы',
       avatar: '',
       text: newComment,
       likes: 0,
-      timeAgo: 'Just now',
+      timeAgo: 'Только что',
       isLiked: false,
     };
 
@@ -99,7 +99,7 @@ export default function CommentsSheet({
           <SheetTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Icon name="MessageCircle" size={24} className="text-primary" />
-              <span className="font-['Orbitron'] text-lg font-bold">Comments</span>
+              <span className="font-['Orbitron'] text-lg font-bold">Комментарии</span>
               <span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs font-medium text-primary">
                 {totalComments}
               </span>
@@ -133,7 +133,7 @@ export default function CommentsSheet({
                         </span>
                         {comment.author === videoAuthor && (
                           <span className="rounded-full bg-gradient-to-r from-primary to-secondary px-2 py-0.5 text-[10px] font-bold text-white">
-                            Creator
+                            Автор
                           </span>
                         )}
                       </div>
@@ -160,7 +160,7 @@ export default function CommentsSheet({
                         </span>
                       </button>
                       <button className="text-xs font-medium text-muted-foreground transition-colors hover:text-primary">
-                        Reply
+                        Ответить
                       </button>
                     </div>
                   </div>
@@ -178,7 +178,7 @@ export default function CommentsSheet({
               </Avatar>
               <div className="flex flex-1 gap-2">
                 <Input
-                  placeholder="Add a comment..."
+                  placeholder="Добавить комментарий..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}

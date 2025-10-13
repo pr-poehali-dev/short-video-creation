@@ -188,7 +188,7 @@ export default function VideoCard({
                     : 'bg-gradient-to-r from-primary to-secondary hover:opacity-90'
                 }`}
               >
-                {isFollowing ? 'Following' : 'Follow'}
+                {isFollowing ? 'Подписка' : 'Подписаться'}
               </Button>
             </div>
             <p className="text-xs md:text-sm text-foreground/90">{parseDescription(description)}</p>

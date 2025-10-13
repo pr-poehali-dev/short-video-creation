@@ -18,7 +18,7 @@ export default function TrendsSection() {
       views: '2.4M',
       posts: 12500,
       growth: 156,
-      category: 'Technology'
+      category: 'Технологии'
     },
     {
       id: 2,
@@ -26,7 +26,7 @@ export default function TrendsSection() {
       views: '1.8M',
       posts: 8900,
       growth: 134,
-      category: 'Lifestyle'
+      category: 'Лайфстайл'
     },
     {
       id: 3,
@@ -34,7 +34,7 @@ export default function TrendsSection() {
       views: '1.5M',
       posts: 7200,
       growth: 89,
-      category: 'Art'
+      category: 'Искусство'
     },
     {
       id: 4,
@@ -42,7 +42,7 @@ export default function TrendsSection() {
       views: '980K',
       posts: 5600,
       growth: 67,
-      category: 'Creative'
+      category: 'Креатив'
     },
     {
       id: 5,
@@ -50,7 +50,7 @@ export default function TrendsSection() {
       views: '756K',
       posts: 4300,
       growth: 45,
-      category: 'Music'
+      category: 'Музыка'
     },
     {
       id: 6,
@@ -58,7 +58,7 @@ export default function TrendsSection() {
       views: '654K',
       posts: 3800,
       growth: 112,
-      category: 'Technology'
+      category: 'Технологии'
     },
     {
       id: 7,
@@ -66,18 +66,18 @@ export default function TrendsSection() {
       views: '543K',
       posts: 2900,
       growth: 98,
-      category: 'AI'
+      category: 'ИИ'
     },
   ]);
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      Technology: 'from-primary to-secondary',
-      Lifestyle: 'from-secondary to-accent',
-      Art: 'from-accent to-primary',
-      Creative: 'from-primary/80 to-accent/80',
-      Music: 'from-secondary/80 to-primary/80',
-      AI: 'from-accent/80 to-secondary/80',
+      'Технологии': 'from-primary to-secondary',
+      'Лайфстайл': 'from-secondary to-accent',
+      'Искусство': 'from-accent to-primary',
+      'Креатив': 'from-primary/80 to-accent/80',
+      'Музыка': 'from-secondary/80 to-primary/80',
+      'ИИ': 'from-accent/80 to-secondary/80',
     };
     return colors[category] || 'from-primary to-secondary';
   };
@@ -90,10 +90,10 @@ export default function TrendsSection() {
             <Icon name="TrendingUp" size={40} className="text-white" />
           </div>
           <h2 className="mb-2 font-['Orbitron'] text-xl md:text-2xl font-bold text-foreground">
-            Trending Now
+            Актуальное сейчас
           </h2>
           <p className="text-sm text-muted-foreground">
-            Discover what's hot in the community
+            Узнайте, что популярно в сообществе
           </p>
         </div>
 
@@ -122,11 +122,11 @@ export default function TrendsSection() {
                   <div className="flex items-center gap-4 text-xs text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <Icon name="Eye" size={14} />
-                      <span>{trend.views} views</span>
+                      <span>{trend.views} просмотров</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Icon name="Video" size={14} />
-                      <span>{trend.posts.toLocaleString()} posts</span>
+                      <span>{trend.posts.toLocaleString()} постов</span>
                     </div>
                   </div>
                 </div>
@@ -153,11 +153,11 @@ export default function TrendsSection() {
           <div className="mb-2 flex items-center gap-2">
             <Icon name="Sparkles" size={18} className="text-accent" />
             <h3 className="font-['Orbitron'] text-sm font-semibold text-foreground">
-              Trending Tips
+              Советы по трендам
             </h3>
           </div>
           <p className="text-xs text-muted-foreground">
-            Use trending hashtags to reach more people and boost your visibility. Create content around popular topics!
+            Используйте популярные хештеги, чтобы охватить больше людей и повысить видимость. Создавайте контент на популярные темы!
           </p>
         </div>
       </div>

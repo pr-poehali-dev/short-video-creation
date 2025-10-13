@@ -21,25 +21,25 @@ interface ChatScreenProps {
 const mockMessages: Message[] = [
   {
     id: 1,
-    text: "Hey! How are you? 👋",
+    text: "Привет! Как дела? 👋",
     timestamp: '10:30',
     isOwn: false,
   },
   {
     id: 2,
-    text: "Hi! I'm great, thanks! Just finished a new video",
+    text: "Привет! Всё отлично, спасибо! Только что закончил новое видео",
     timestamp: '10:32',
     isOwn: true,
   },
   {
     id: 3,
-    text: "That's awesome! Can't wait to see it 🚀",
+    text: "Круто! Жду не дождусь увидеть 🚀",
     timestamp: '10:33',
     isOwn: false,
   },
   {
     id: 4,
-    text: "Check it out on my profile! Let me know what you think ✨",
+    text: "Посмотри в моем профиле! Дай знать, что думаешь ✨",
     timestamp: '10:35',
     isOwn: true,
   },
@@ -100,7 +100,7 @@ export default function ChatScreen({ chat, onBack }: ChatScreenProps) {
 
         <div className="flex-1">
           <h2 className="font-['Orbitron'] font-bold text-foreground">{chat.username}</h2>
-          <p className="text-xs text-muted-foreground">{chat.online ? 'Online' : 'Offline'}</p>
+          <p className="text-xs text-muted-foreground">{chat.online ? 'В сети' : 'Не в сети'}</p>
         </div>
 
         <button className="h-10 w-10 rounded-full hover:bg-card/50 flex items-center justify-center transition-colors">
@@ -145,7 +145,7 @@ export default function ChatScreen({ chat, onBack }: ChatScreenProps) {
 
           <input
             type="text"
-            placeholder="Type a message..."
+            placeholder="Напишите сообщение..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}

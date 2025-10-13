@@ -12,6 +12,7 @@ interface UserProfileProps {
   onMessageClick?: () => void;
   onAchievementsClick?: () => void;
   onMonetizationClick?: () => void;
+  onReferralsClick?: () => void;
 }
 
 export default function UserProfile({
@@ -25,6 +26,7 @@ export default function UserProfile({
   onMessageClick,
   onAchievementsClick,
   onMonetizationClick,
+  onReferralsClick,
 }: UserProfileProps) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [userLevel] = useState(12);
@@ -57,35 +59,53 @@ export default function UserProfile({
             )}
 
             {isOwnProfile && (
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <button
-                  onClick={onAchievementsClick}
-                  className="rounded-2xl border border-border bg-gradient-to-br from-primary/10 to-secondary/10 p-4 hover:border-primary transition-all"
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center">
-                      <span className="font-['Orbitron'] text-lg font-bold text-white">{userLevel}</span>
+              <>
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <button
+                    onClick={onAchievementsClick}
+                    className="rounded-2xl border border-border bg-gradient-to-br from-primary/10 to-secondary/10 p-4 hover:border-primary transition-all"
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center">
+                        <span className="font-['Orbitron'] text-lg font-bold text-white">{userLevel}</span>
+                      </div>
+                      <div className="text-left">
+                        <p className="text-xs text-muted-foreground">Уровень</p>
+                        <p className="font-['Orbitron'] font-bold text-foreground">{userLevel}</p>
+                      </div>
                     </div>
-                    <div className="text-left">
-                      <p className="text-xs text-muted-foreground">Уровень</p>
-                      <p className="font-['Orbitron'] font-bold text-foreground">{userLevel}</p>
+                  </button>
+
+                  <button
+                    onClick={onMonetizationClick}
+                    className="rounded-2xl border border-border bg-gradient-to-br from-yellow-500/10 to-orange-500/10 p-4 hover:border-yellow-500 transition-all"
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <Icon name="Coins" size={32} className="text-yellow-500" />
+                      <div className="text-left">
+                        <p className="text-xs text-muted-foreground">Монеты</p>
+                        <p className="font-['Orbitron'] font-bold text-foreground">{userCoins}</p>
+                      </div>
                     </div>
-                  </div>
-                </button>
+                  </button>
+                </div>
 
                 <button
-                  onClick={onMonetizationClick}
-                  className="rounded-2xl border border-border bg-gradient-to-br from-yellow-500/10 to-orange-500/10 p-4 hover:border-yellow-500 transition-all"
+                  onClick={onReferralsClick}
+                  className="w-full rounded-2xl border border-border bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 p-4 hover:border-green-500 transition-all mb-6"
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <Icon name="Coins" size={32} className="text-yellow-500" />
-                    <div className="text-left">
-                      <p className="text-xs text-muted-foreground">Монеты</p>
-                      <p className="font-['Orbitron'] font-bold text-foreground">{userCoins}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Icon name="Users" size={32} className="text-green-500" />
+                      <div className="text-left">
+                        <p className="font-['Orbitron'] font-bold text-foreground">Реферальная программа</p>
+                        <p className="text-xs text-muted-foreground">Приглашай друзей и зарабатывай</p>
+                      </div>
                     </div>
+                    <Icon name="ChevronRight" size={20} className="text-muted-foreground" />
                   </div>
                 </button>
-              </div>
+              </>
             )}
 
             <div className="flex items-center gap-6 mb-6">

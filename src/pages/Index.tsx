@@ -12,6 +12,7 @@ import AchievementsScreen from '@/components/AchievementsScreen';
 import MonetizationDashboard from '@/components/MonetizationDashboard';
 import LeaderboardScreen from '@/components/LeaderboardScreen';
 import ChallengesScreen from '@/components/ChallengesScreen';
+import ReferralProgram from '@/components/ReferralProgram';
 import LandingPage from '@/components/LandingPage';
 import AuthForm from '@/components/AuthForm';
 import Icon from '@/components/ui/icon';
@@ -69,6 +70,7 @@ export default function Index() {
   const [showMonetization, setShowMonetization] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showChallenges, setShowChallenges] = useState(false);
+  const [showReferrals, setShowReferrals] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
@@ -191,6 +193,20 @@ export default function Index() {
           <Icon name="ArrowLeft" size={24} />
         </button>
         <ChallengesScreen />
+      </div>
+    );
+  }
+
+  if (showReferrals) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        <button
+          onClick={() => setShowReferrals(false)}
+          className="absolute left-4 top-4 z-50 h-10 w-10 rounded-full bg-card/50 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-all"
+        >
+          <Icon name="ArrowLeft" size={24} />
+        </button>
+        <ReferralProgram />
       </div>
     );
   }
@@ -433,6 +449,7 @@ export default function Index() {
             isOwnProfile={true}
             onAchievementsClick={() => setShowAchievements(true)}
             onMonetizationClick={() => setShowMonetization(true)}
+            onReferralsClick={() => setShowReferrals(true)}
           />
         </div>
       )}

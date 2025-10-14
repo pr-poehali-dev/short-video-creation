@@ -147,7 +147,7 @@ export default function Index() {
         onAuthSuccess={handleAuthSuccess}
       />
 
-      {selectedStoryIndex !== null && (
+      {selectedStoryIndex !== null ? (
         <StoryViewer
           stories={[
             { id: 1, username: 'CyberCreator', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg', hasViewed: false, isLive: true },
@@ -160,8 +160,7 @@ export default function Index() {
           initialStoryIndex={selectedStoryIndex}
           onClose={() => setSelectedStoryIndex(null)}
         />
-      )}
-      
+      ) : (
       <MainLayout
         isDesktop={isDesktop}
         activeTab={activeTab}
@@ -213,6 +212,7 @@ export default function Index() {
 
       {activeTab === 'messages' && <MessagesScreen />}
       </MainLayout>
+      )}
     </>
   );
 }

@@ -52,28 +52,28 @@ const mockStories: Story[] = [
 export default function StoriesBar({ onStoryClick, onCreateStory }: StoriesBarProps) {
   return (
     <div className="w-full bg-background/80 backdrop-blur-sm border-b border-border">
-      <div className="flex gap-2 md:gap-3 overflow-x-auto scrollbar-hide px-2 md:px-4 py-1.5 md:py-2">
+      <div className="flex gap-1.5 md:gap-2 overflow-x-auto scrollbar-hide px-2 md:px-3 py-1 md:py-1.5">
         <button
           onClick={onCreateStory}
-          className="flex-shrink-0 flex flex-col items-center gap-1 group"
+          className="flex-shrink-0 flex flex-col items-center gap-0.5 group"
         >
           <div className="relative">
-            <div className="h-12 w-12 md:h-16 md:w-16 rounded-full bg-gradient-to-br from-card to-card/50 border-2 border-dashed border-primary flex items-center justify-center group-hover:border-secondary transition-all">
-              <Icon name="Plus" size={18} className="text-primary group-hover:text-secondary transition-colors md:w-6 md:h-6" />
+            <div className="h-10 w-10 md:h-14 md:w-14 rounded-full bg-gradient-to-br from-card to-card/50 border-2 border-dashed border-primary flex items-center justify-center group-hover:border-secondary transition-all">
+              <Icon name="Plus" size={16} className="text-primary group-hover:text-secondary transition-colors md:w-5 md:h-5" />
             </div>
           </div>
-          <span className="text-[9px] md:text-xs text-muted-foreground font-medium">Создать</span>
+          <span className="text-[8px] md:text-[10px] text-muted-foreground font-medium">Создать</span>
         </button>
 
         {mockStories.map((story) => (
           <button
             key={story.id}
             onClick={() => onStoryClick(story)}
-            className="flex-shrink-0 flex flex-col items-center gap-1 group"
+            className="flex-shrink-0 flex flex-col items-center gap-0.5 group"
           >
             <div className="relative">
               <div
-                className={`h-12 w-12 md:h-16 md:w-16 rounded-full p-0.5 ${
+                className={`h-10 w-10 md:h-14 md:w-14 rounded-full p-0.5 ${
                   story.hasViewed
                     ? 'bg-border'
                     : 'bg-gradient-to-br from-primary via-secondary to-accent'
@@ -88,13 +88,13 @@ export default function StoriesBar({ onStoryClick, onCreateStory }: StoriesBarPr
                 </div>
               </div>
               {story.isLive && (
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0.5 px-1 md:px-1.5 py-0.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-0.5 animate-pulse-glow">
-                  <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full bg-white" />
-                  <span className="text-[8px] md:text-[9px] font-bold text-white uppercase">Live</span>
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0.5 px-1 py-0.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-0.5 animate-pulse-glow">
+                  <div className="h-0.5 w-0.5 md:h-1 md:w-1 rounded-full bg-white" />
+                  <span className="text-[7px] md:text-[8px] font-bold text-white uppercase">Live</span>
                 </div>
               )}
             </div>
-            <span className="text-[9px] md:text-xs text-foreground font-medium truncate max-w-[48px] md:max-w-[64px]">
+            <span className="text-[8px] md:text-[10px] text-foreground font-medium truncate max-w-[40px] md:max-w-[56px]">
               {story.username}
             </span>
           </button>

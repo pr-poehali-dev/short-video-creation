@@ -116,8 +116,8 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose }: Sto
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-background">
-      <div className="relative h-full w-full">
+    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <div className="relative w-full max-w-[min(100vw,56.25vh)] h-full max-h-[min(100vh,177.78vw)] aspect-[9/16]">
         {currentContent.type === 'image' ? (
           <img
             src={currentContent.url}

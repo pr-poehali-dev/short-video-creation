@@ -5,6 +5,21 @@ import Icon from '@/components/ui/icon';
 import CommentsSheet from './CommentsSheet';
 import ShareSheet from './ShareSheet';
 
+const useIsDesktop = () => {
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isDesktop;
+};
+
 interface VideoCardProps {
   id: number;
   author: string;
@@ -27,6 +42,7 @@ export default function VideoCard({
   description,
   onProfileClick,
 }: VideoCardProps) {
+  const isDesktop = useIsDesktop();
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(initialLikes);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -122,12 +138,26 @@ export default function VideoCard({
 
   return (
     <div className="relative h-screen w-full snap-start snap-always overflow-hidden flex items-center justify-center bg-background">
-      <div className="relative w-full lg:max-w-[400px] max-w-[500px] lg:aspect-[9/16] h-full lg:h-auto flex items-center justify-center">
-        <div className="relative w-full h-full lg:rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-background to-secondary/20">
+      <div 
+        className="relative w-full flex items-center justify-center"
+        style={isDesktop ? {
+          maxWidth: '400px',
+          aspectRatio: '9/16',
+          height: 'auto'
+        } : {
+          maxWidth: '500px',
+          height: '100%'
+        }}
+      >
+        <div 
+          className="relative w-full h-full overflow-hidden bg-gradient-to-br from-primary/20 via-background to-secondary/20"
+          style={isDesktop ? { borderRadius: '16px' } : {}}
+        >
           <video
             ref={videoRef}
             src={videoUrl}
-            className="h-full w-full object-contain lg:object-cover"
+            className="h-full w-full"
+            style={{ objectFit: isDesktop ? 'cover' : 'contain' }}
             loop
             playsInline
             muted={isMuted}

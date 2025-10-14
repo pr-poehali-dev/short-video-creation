@@ -75,7 +75,7 @@ const mockRecommendedVideos = [
 
 export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory }: DesktopStoriesSidebarProps) {
   return (
-    <div className="hidden lg:flex flex-col w-80 h-screen bg-background fixed right-0 top-0 overflow-y-auto scrollbar-hide">
+    <div className="flex flex-col w-80 h-screen bg-background fixed right-0 top-0 overflow-y-auto scrollbar-hide">
       <div className="p-4 space-y-4">
         <div>
           <h2 className="font-['Orbitron'] text-base font-bold text-foreground mb-3">

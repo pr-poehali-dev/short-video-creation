@@ -73,9 +73,19 @@ export default function Index() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showChallenges, setShowChallenges] = useState(false);
   const [showReferrals, setShowReferrals] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('peeky_user');
@@ -292,36 +302,44 @@ export default function Index() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-background flex">
-      <DesktopSidebar
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        onLiveClick={() => setShowLiveScreen(true)}
-        onLeaderboardClick={() => setShowLeaderboard(true)}
-        onChallengesClick={() => setShowChallenges(true)}
-      />
+      {isDesktop && (
+        <DesktopSidebar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          onLiveClick={() => setShowLiveScreen(true)}
+          onLeaderboardClick={() => setShowLeaderboard(true)}
+          onChallengesClick={() => setShowChallenges(true)}
+        />
+      )}
 
-      <div className="flex-1 lg:ml-60 lg:mr-80 relative">
-        <div className="lg:hidden absolute left-3 top-2 md:left-4 md:top-3 z-40 animate-fade-in">
-          <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-base md:text-2xl font-black tracking-wider text-transparent">
-            Peeky
-          </h1>
-        </div>
+      <div className="flex-1 relative" style={isDesktop ? { marginLeft: '240px', marginRight: '320px' } : {}}>
+        {!isDesktop && (
+          <div className="absolute left-3 top-2 md:left-4 md:top-3 z-40 animate-fade-in">
+            <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-base md:text-2xl font-black tracking-wider text-transparent">
+              Peeky
+            </h1>
+          </div>
+        )}
 
           {activeTab === 'feed' && (
           <>
-            <div className="lg:hidden flex-shrink-0 pt-10 md:pt-12 z-30">
-              <StoriesBar
-                onStoryClick={(story) => setSelectedStory(story)}
-                onCreateStory={() => console.log('Create story')}
-              />
-            </div>
-            <button
-              onClick={() => setShowLiveScreen(true)}
-              className="lg:hidden absolute top-[94px] md:top-[100px] right-3 md:right-4 z-30 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 md:gap-1.5 hover:opacity-90 transition-opacity animate-pulse-glow"
-            >
-              <Icon name="Radio" size={14} className="text-white md:w-4 md:h-4" />
-              <span className="text-[9px] md:text-xs font-bold text-white uppercase">Эфир</span>
-            </button>
+            {!isDesktop && (
+              <>
+                <div className="flex-shrink-0 pt-10 md:pt-12 z-30">
+                  <StoriesBar
+                    onStoryClick={(story) => setSelectedStory(story)}
+                    onCreateStory={() => console.log('Create story')}
+                  />
+                </div>
+                <button
+                  onClick={() => setShowLiveScreen(true)}
+                  className="absolute top-[94px] md:top-[100px] right-3 md:right-4 z-30 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 md:gap-1.5 hover:opacity-90 transition-opacity animate-pulse-glow"
+                >
+                  <Icon name="Radio" size={14} className="text-white md:w-4 md:h-4" />
+                  <span className="text-[9px] md:text-xs font-bold text-white uppercase">Эфир</span>
+                </button>
+              </>
+            )}
             <div 
               ref={containerRef}
               className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
@@ -469,15 +487,17 @@ export default function Index() {
           <MessagesScreen />
         )}
 
-        <div className="lg:hidden">
+        {!isDesktop && (
           <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
-        </div>
+        )}
       </div>
 
-      <DesktopStoriesSidebar
-        onStoryClick={(story) => setSelectedStory(story)}
-        onCreateStory={() => console.log('Create story')}
-      />
+      {isDesktop && (
+        <DesktopStoriesSidebar
+          onStoryClick={(story) => setSelectedStory(story)}
+          onCreateStory={() => console.log('Create story')}
+        />
+      )}
     </div>
   );
 }

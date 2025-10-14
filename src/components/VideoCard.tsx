@@ -5,6 +5,7 @@ import Icon from '@/components/ui/icon';
 import CommentsSheet from './CommentsSheet';
 import ShareSheet from './ShareSheet';
 import GiftsSheet from './GiftsSheet';
+import { authService } from '@/lib/auth';
 
 const useIsDesktop = () => {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
@@ -31,6 +32,7 @@ interface VideoCardProps {
   videoUrl: string;
   description: string;
   onProfileClick?: () => void;
+  onLoginRequired?: () => void;
 }
 
 export default function VideoCard({
@@ -42,6 +44,7 @@ export default function VideoCard({
   videoUrl,
   description,
   onProfileClick,
+  onLoginRequired,
 }: VideoCardProps) {
   const isDesktop = useIsDesktop();
   const [isLiked, setIsLiked] = useState(false);
@@ -130,12 +133,32 @@ export default function VideoCard({
   };
 
   const handleLike = () => {
+    if (!authService.getCurrentUser()) {
+      onLoginRequired?.();
+      return;
+    }
     if (isLiked) {
       setLikes(likes - 1);
     } else {
       setLikes(likes + 1);
     }
     setIsLiked(!isLiked);
+  };
+
+  const handleComments = () => {
+    if (!authService.getCurrentUser()) {
+      onLoginRequired?.();
+      return;
+    }
+    setShowComments(true);
+  };
+
+  const handleGifts = () => {
+    if (!authService.getCurrentUser()) {
+      onLoginRequired?.();
+      return;
+    }
+    setShowGifts(true);
   };
 
   return (
@@ -250,7 +273,7 @@ export default function VideoCard({
             </button>
 
             <button 
-              onClick={() => setShowGifts(true)}
+              onClick={handleGifts}
               className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
             >
               <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500">
@@ -262,7 +285,7 @@ export default function VideoCard({
             </button>
 
             <button 
-              onClick={() => setShowComments(true)}
+              onClick={handleComments}
               className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
             >
               <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/30 backdrop-blur-sm">

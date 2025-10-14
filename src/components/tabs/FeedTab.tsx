@@ -23,6 +23,7 @@ interface FeedTabProps {
   onStoryClick: (storyIndex: number) => void;
   onCreateStory: () => void;
   onLiveClick: () => void;
+  onLoginRequired?: () => void;
 }
 
 export default function FeedTab({
@@ -34,6 +35,7 @@ export default function FeedTab({
   onStoryClick,
   onCreateStory,
   onLiveClick,
+  onLoginRequired,
 }: FeedTabProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
@@ -104,6 +106,7 @@ export default function FeedTab({
             key={video.id} 
             {...video} 
             onProfileClick={() => onProfileClick(video.author)}
+            onLoginRequired={onLoginRequired}
           />
         ))}
       </div>

@@ -184,6 +184,7 @@ export default function Index() {
           onStoryClick={(storyIndex) => setSelectedStoryIndex(storyIndex)}
           onCreateStory={() => console.log('Create story')}
           onLiveClick={() => setShowLiveScreen(true)}
+          onLoginRequired={() => setShowAuthModal(true)}
         />
       )}
 

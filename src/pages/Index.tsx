@@ -159,6 +159,10 @@ export default function Index() {
           ]}
           initialStoryIndex={selectedStoryIndex}
           onClose={() => setSelectedStoryIndex(null)}
+          onLoginRequired={() => {
+            setSelectedStoryIndex(null);
+            setShowAuthModal(true);
+          }}
         />
       ) : (
       <MainLayout

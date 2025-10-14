@@ -81,7 +81,7 @@ export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory }: D
           <h2 className="font-['Orbitron'] text-base font-bold text-foreground mb-3">
             Вам может понравиться
           </h2>
-          <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
             {mockRecommendedVideos.map((video) => (
               <div
                 key={video.id}

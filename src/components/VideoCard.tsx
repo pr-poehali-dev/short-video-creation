@@ -276,7 +276,7 @@ export default function VideoCard({
               onClick={handleGifts}
               className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
             >
-              <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500">
+              <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/30 backdrop-blur-sm">
                 <Icon name="Gift" size={22} className="text-white" />
               </div>
               <span className="font-['Orbitron'] text-[10px] md:text-xs font-semibold text-white">

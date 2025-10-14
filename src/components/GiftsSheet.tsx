@@ -58,7 +58,7 @@ export default function GiftsSheet({ isOpen, onClose, videoAuthor }: GiftsSheetP
           </div>
         </SheetHeader>
 
-        <div className="mt-6 grid grid-cols-3 gap-4 pb-24">
+        <div className="mt-6 grid grid-cols-3 gap-4 pb-24 overflow-y-auto max-h-[calc(70vh-200px)]">
           {gifts.map((gift) => (
             <button
               key={gift.id}

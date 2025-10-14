@@ -30,7 +30,7 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState<NavItem>('feed');
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [selectedUserProfile, setSelectedUserProfile] = useState<string | null>(null);
-  const [selectedStory, setSelectedStory] = useState<any>(null);
+  const [selectedStoryIndex, setSelectedStoryIndex] = useState<number | null>(null);
   const [showLiveScreen, setShowLiveScreen] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showMonetization, setShowMonetization] = useState(false);
@@ -109,14 +109,7 @@ export default function Index() {
     );
   }
 
-  if (selectedStory) {
-    return (
-      <StoryViewer
-        story={selectedStory}
-        onClose={() => setSelectedStory(null)}
-      />
-    );
-  }
+
 
   if (showLiveScreen) {
     return (
@@ -153,6 +146,21 @@ export default function Index() {
         onClose={() => setShowAuthModal(false)}
         onAuthSuccess={handleAuthSuccess}
       />
+
+      {selectedStoryIndex !== null && (
+        <StoryViewer
+          stories={[
+            { id: 1, username: 'CyberCreator', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg', hasViewed: false, isLive: true },
+            { id: 2, username: 'NeonDancer', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/f6887c05-c23f-48ba-9c37-f82ecfc71348.jpg', hasViewed: false, isLive: true },
+            { id: 3, username: 'TechBeats', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/b7be10cb-cafa-4dee-b9f7-6f4194b5c3c5.jpg', hasViewed: false },
+            { id: 4, username: 'DigitalArt', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg', hasViewed: true },
+            { id: 5, username: 'FutureVibes', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/f6887c05-c23f-48ba-9c37-f82ecfc71348.jpg', hasViewed: true },
+            { id: 6, username: 'ArtistPro', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/b7be10cb-cafa-4dee-b9f7-6f4194b5c3c5.jpg', hasViewed: false },
+          ]}
+          initialStoryIndex={selectedStoryIndex}
+          onClose={() => setSelectedStoryIndex(null)}
+        />
+      )}
       
       <MainLayout
         isDesktop={isDesktop}
@@ -161,7 +169,7 @@ export default function Index() {
         onLiveClick={() => setShowLiveScreen(true)}
         onLeaderboardClick={() => setShowLeaderboard(true)}
         onChallengesClick={() => setShowChallenges(true)}
-        onStoryClick={(story) => setSelectedStory(story)}
+        onStoryClick={(storyIndex) => setSelectedStoryIndex(storyIndex)}
         onCreateStory={() => console.log('Create story')}
         currentUser={currentUser}
         onLoginClick={() => setShowAuthModal(true)}
@@ -174,7 +182,7 @@ export default function Index() {
           currentVideoIndex={currentVideoIndex}
           onVideoIndexChange={setCurrentVideoIndex}
           onProfileClick={setSelectedUserProfile}
-          onStoryClick={(story) => setSelectedStory(story)}
+          onStoryClick={(storyIndex) => setSelectedStoryIndex(storyIndex)}
           onCreateStory={() => console.log('Create story')}
           onLiveClick={() => setShowLiveScreen(true)}
         />

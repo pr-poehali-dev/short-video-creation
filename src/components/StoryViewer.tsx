@@ -9,15 +9,15 @@ interface StoryContent {
 }
 
 interface StoryViewerProps {
-  story: {
+  stories: Array<{
     id: number;
     username: string;
     avatar: string;
     isLive?: boolean;
-  };
+    hasViewed: boolean;
+  }>;
+  initialStoryIndex: number;
   onClose: () => void;
-  onNext?: () => void;
-  onPrevious?: () => void;
 }
 
 const mockStoryContent: StoryContent[] = [
@@ -35,8 +35,9 @@ const mockStoryContent: StoryContent[] = [
   },
 ];
 
-export default function StoryViewer({ story, onClose, onNext, onPrevious }: StoryViewerProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function StoryViewer({ stories, initialStoryIndex, onClose }: StoryViewerProps) {
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(initialStoryIndex);
+  const [currentContentIndex, setCurrentContentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
@@ -44,10 +45,11 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
   const progressIntervalRef = useRef<NodeJS.Timeout>();
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const currentContent = mockStoryContent[currentIndex];
+  const currentStory = stories[currentStoryIndex];
+  const currentContent = mockStoryContent[currentContentIndex];
 
   useEffect(() => {
-    if (isPaused || story.isLive) return;
+    if (isPaused || currentStory.isLive) return;
 
     const duration = currentContent.duration;
     const intervalTime = 50;
@@ -68,25 +70,29 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
         clearInterval(progressIntervalRef.current);
       }
     };
-  }, [currentIndex, isPaused, story.isLive]);
+  }, [currentContentIndex, currentStoryIndex, isPaused, currentStory.isLive]);
 
   const handleNext = () => {
-    if (currentIndex < mockStoryContent.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+    if (currentContentIndex < mockStoryContent.length - 1) {
+      setCurrentContentIndex(currentContentIndex + 1);
       setProgress(0);
-    } else if (onNext) {
-      onNext();
+    } else if (currentStoryIndex < stories.length - 1) {
+      setCurrentStoryIndex(currentStoryIndex + 1);
+      setCurrentContentIndex(0);
+      setProgress(0);
     } else {
       onClose();
     }
   };
 
   const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+    if (currentContentIndex > 0) {
+      setCurrentContentIndex(currentContentIndex - 1);
       setProgress(0);
-    } else if (onPrevious) {
-      onPrevious();
+    } else if (currentStoryIndex > 0) {
+      setCurrentStoryIndex(currentStoryIndex - 1);
+      setCurrentContentIndex(mockStoryContent.length - 1);
+      setProgress(0);
     }
   };
 
@@ -131,7 +137,7 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
 
-        {!story.isLive && (
+        {!currentStory.isLive && (
           <div className="absolute top-0 left-0 right-0 flex gap-1 px-2 pt-2">
             {mockStoryContent.map((_, index) => (
               <div
@@ -142,9 +148,9 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
                   className="h-full bg-white transition-all duration-100"
                   style={{
                     width: `${
-                      index < currentIndex
+                      index < currentContentIndex
                         ? 100
-                        : index === currentIndex
+                        : index === currentContentIndex
                         ? progress
                         : 0
                     }%`,
@@ -160,20 +166,20 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full border-2 border-white overflow-hidden">
                 <img
-                  src={story.avatar}
-                  alt={story.username}
+                  src={currentStory.avatar}
+                  alt={currentStory.username}
                   className="h-full w-full object-cover"
                 />
               </div>
               <div>
                 <p className="font-['Orbitron'] text-sm font-bold text-white">
-                  {story.username}
+                  {currentStory.username}
                 </p>
                 <p className="text-xs text-white/70">
-                  {story.isLive ? 'В эфире' : '2ч назад'}
+                  {currentStory.isLive ? 'В эфире' : '2ч назад'}
                 </p>
               </div>
-              {story.isLive && (
+              {currentStory.isLive && (
                 <div className="px-2 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 animate-pulse-glow">
                   <div className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
                   <span className="text-xs font-bold text-white uppercase">Эфир</span>
@@ -182,7 +188,7 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
             </div>
 
             <div className="flex items-center gap-2">
-              {!story.isLive && (
+              {!currentStory.isLive && (
                 <button
                   onClick={handlePauseToggle}
                   className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors"
@@ -200,7 +206,7 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
           </div>
         </div>
 
-        {story.isLive && (
+        {currentStory.isLive && (
           <div className="absolute top-20 right-4 flex flex-col gap-4">
             <div className="flex flex-col items-center gap-1">
               <div className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
@@ -225,7 +231,7 @@ export default function StoryViewer({ story, onClose, onNext, onPrevious }: Stor
             <div className="flex items-center gap-2 animate-fade-in">
               <input
                 type="text"
-                placeholder={`Ответить ${story.username}...`}
+                placeholder={`Ответить ${currentStory.username}...`}
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendReply()}

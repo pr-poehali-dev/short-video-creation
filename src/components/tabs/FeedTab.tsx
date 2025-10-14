@@ -20,7 +20,7 @@ interface FeedTabProps {
   currentVideoIndex: number;
   onVideoIndexChange: (index: number) => void;
   onProfileClick: (author: string) => void;
-  onStoryClick: (story: any) => void;
+  onStoryClick: (storyIndex: number) => void;
   onCreateStory: () => void;
   onLiveClick: () => void;
 }

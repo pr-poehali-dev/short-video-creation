@@ -9,7 +9,7 @@ interface Story {
 }
 
 interface DesktopStoriesSidebarProps {
-  onStoryClick: (story: Story) => void;
+  onStoryClick: (storyIndex: number) => void;
   onCreateStory: () => void;
 }
 
@@ -136,10 +136,10 @@ export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory }: D
             </button>
           </div>
           <div className="space-y-3">
-            {mockStories.map((story) => (
+            {mockStories.map((story, index) => (
               <button
                 key={story.id}
-                onClick={() => onStoryClick(story)}
+                onClick={() => onStoryClick(index)}
                 className="w-full flex items-center gap-3 hover:bg-card/30 p-2 rounded-lg transition-all"
               >
                 <div className="relative flex-shrink-0">

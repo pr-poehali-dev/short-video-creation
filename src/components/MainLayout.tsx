@@ -13,7 +13,7 @@ interface MainLayoutProps {
   onLiveClick: () => void;
   onLeaderboardClick: () => void;
   onChallengesClick: () => void;
-  onStoryClick: (story: any) => void;
+  onStoryClick: (storyIndex: number) => void;
   onCreateStory: () => void;
   currentUser: User | null;
   onLoginClick: () => void;

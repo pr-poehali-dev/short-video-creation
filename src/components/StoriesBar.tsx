@@ -10,7 +10,7 @@ interface Story {
 }
 
 interface StoriesBarProps {
-  onStoryClick: (story: Story) => void;
+  onStoryClick: (storyIndex: number) => void;
   onCreateStory: () => void;
 }
 
@@ -65,10 +65,10 @@ export default function StoriesBar({ onStoryClick, onCreateStory }: StoriesBarPr
           <span className="text-[8px] md:text-[10px] text-muted-foreground font-medium">Создать</span>
         </button>
 
-        {mockStories.map((story) => (
+        {mockStories.map((story, index) => (
           <button
             key={story.id}
-            onClick={() => onStoryClick(story)}
+            onClick={() => onStoryClick(index)}
             className="flex-shrink-0 flex flex-col items-center gap-0.5 group"
           >
             <div className="relative">

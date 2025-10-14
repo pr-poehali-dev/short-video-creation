@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import CommentsSheet from './CommentsSheet';
 import ShareSheet from './ShareSheet';
+import GiftsSheet from './GiftsSheet';
 
 const useIsDesktop = () => {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
@@ -51,6 +52,7 @@ export default function VideoCard({
   const [progress, setProgress] = useState(0);
   const [showComments, setShowComments] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [showGifts, setShowGifts] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const parseDescription = (text: string) => {
@@ -248,6 +250,18 @@ export default function VideoCard({
             </button>
 
             <button 
+              onClick={() => setShowGifts(true)}
+              className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
+            >
+              <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500">
+                <Icon name="Gift" size={22} className="text-white" />
+              </div>
+              <span className="font-['Orbitron'] text-[10px] md:text-xs font-semibold text-white">
+                Подарок
+              </span>
+            </button>
+
+            <button 
               onClick={() => setShowComments(true)}
               className="group flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
             >
@@ -292,6 +306,12 @@ export default function VideoCard({
         onClose={() => setShowShare(false)}
         videoUrl={videoUrl}
         videoTitle={`${author}: ${description.substring(0, 50)}...`}
+      />
+
+      <GiftsSheet
+        isOpen={showGifts}
+        onClose={() => setShowGifts(false)}
+        videoAuthor={author}
       />
     </div>
   );

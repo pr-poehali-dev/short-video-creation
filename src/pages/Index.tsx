@@ -16,6 +16,8 @@ import ReferralProgram from '@/components/ReferralProgram';
 import LandingPage from '@/components/LandingPage';
 import AuthForm from '@/components/AuthForm';
 import Icon from '@/components/ui/icon';
+import DesktopSidebar from '@/components/DesktopSidebar';
+import DesktopStoriesSidebar from '@/components/DesktopStoriesSidebar';
 
 type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
 
@@ -289,42 +291,51 @@ export default function Index() {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-background flex flex-col">
-      <div className="absolute left-3 top-2 md:left-4 md:top-3 z-40 animate-fade-in">
-        <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-base md:text-2xl font-black tracking-wider text-transparent">
-          Peeky
-        </h1>
-      </div>
+    <div className="relative h-screen w-full overflow-hidden bg-background flex">
+      <DesktopSidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onLiveClick={() => setShowLiveScreen(true)}
+        onLeaderboardClick={() => setShowLeaderboard(true)}
+        onChallengesClick={() => setShowChallenges(true)}
+      />
 
-      {activeTab === 'feed' && (
-        <>
-          <div className="flex-shrink-0 pt-10 md:pt-12 z-30">
-            <StoriesBar
-              onStoryClick={(story) => setSelectedStory(story)}
-              onCreateStory={() => console.log('Create story')}
-            />
-          </div>
-          <button
-            onClick={() => setShowLiveScreen(true)}
-            className="absolute top-[94px] md:top-[100px] right-3 md:right-4 z-30 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 md:gap-1.5 hover:opacity-90 transition-opacity animate-pulse-glow"
-          >
-            <Icon name="Radio" size={14} className="text-white md:w-4 md:h-4" />
-            <span className="text-[9px] md:text-xs font-bold text-white uppercase">Эфир</span>
-          </button>
-          <div 
-            ref={containerRef}
-            className="flex-1 snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
-          >
-            {mockVideos.map((video) => (
-              <VideoCard 
-                key={video.id} 
-                {...video} 
-                onProfileClick={() => setSelectedUserProfile(video.author)}
+      <div className="flex-1 lg:ml-60 lg:mr-80 relative">
+        <div className="lg:hidden absolute left-3 top-2 md:left-4 md:top-3 z-40 animate-fade-in">
+          <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-base md:text-2xl font-black tracking-wider text-transparent">
+            Peeky
+          </h1>
+        </div>
+
+          {activeTab === 'feed' && (
+          <>
+            <div className="lg:hidden flex-shrink-0 pt-10 md:pt-12 z-30">
+              <StoriesBar
+                onStoryClick={(story) => setSelectedStory(story)}
+                onCreateStory={() => console.log('Create story')}
               />
-            ))}
-          </div>
-        </>
-      )}
+            </div>
+            <button
+              onClick={() => setShowLiveScreen(true)}
+              className="lg:hidden absolute top-[94px] md:top-[100px] right-3 md:right-4 z-30 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 md:gap-1.5 hover:opacity-90 transition-opacity animate-pulse-glow"
+            >
+              <Icon name="Radio" size={14} className="text-white md:w-4 md:h-4" />
+              <span className="text-[9px] md:text-xs font-bold text-white uppercase">Эфир</span>
+            </button>
+            <div 
+              ref={containerRef}
+              className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
+            >
+              {mockVideos.map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  {...video} 
+                  onProfileClick={() => setSelectedUserProfile(video.author)}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
       {activeTab === 'search' && (
         <div className="h-screen overflow-hidden bg-background">
@@ -454,11 +465,19 @@ export default function Index() {
         </div>
       )}
 
-      {activeTab === 'messages' && (
-        <MessagesScreen />
-      )}
+        {activeTab === 'messages' && (
+          <MessagesScreen />
+        )}
 
-      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+        <div className="lg:hidden">
+          <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+        </div>
+      </div>
+
+      <DesktopStoriesSidebar
+        onStoryClick={(story) => setSelectedStory(story)}
+        onCreateStory={() => console.log('Create story')}
+      />
     </div>
   );
 }

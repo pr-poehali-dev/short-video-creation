@@ -40,7 +40,7 @@ export default function DesktopSidebar({
     <div className="flex flex-col w-60 h-screen bg-background border-r border-border fixed left-0 top-0 p-4">
       <div className="mb-8 px-2">
         <h1 className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text font-['Orbitron'] text-2xl font-black tracking-wider text-transparent">
-          TikTok
+          Peeky
         </h1>
       </div>
 
@@ -108,7 +108,7 @@ export default function DesktopSidebar({
             <a href="#" className="block hover:text-foreground">Условия и политика</a>
           </div>
         </div>
-        <p className="text-xs text-muted-foreground">© 2025 TikTok</p>
+        <p className="text-xs text-muted-foreground">© 2025 Peeky</p>
       </div>
     </div>
   );

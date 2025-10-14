@@ -184,6 +184,10 @@ export default function Index() {
             setSelectedStoryIndex(null);
             setShowAuthModal(true);
           }}
+          onStoryDeleted={() => {
+            setSelectedStoryIndex(null);
+            loadStories();
+          }}
         />
       ) : (
       <MainLayout

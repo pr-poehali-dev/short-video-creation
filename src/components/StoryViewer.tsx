@@ -20,11 +20,12 @@ interface StoryViewerProps {
   initialStoryIndex: number;
   onClose: () => void;
   onLoginRequired?: () => void;
+  onStoryDeleted?: () => void;
 }
 
 const STORIES_API = 'https://functions.poehali.dev/28f82b7d-ad37-41a0-b378-05240f106feb';
 
-export default function StoryViewer({ stories, initialStoryIndex, onClose, onLoginRequired }: StoryViewerProps) {
+export default function StoryViewer({ stories, initialStoryIndex, onClose, onLoginRequired, onStoryDeleted }: StoryViewerProps) {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(initialStoryIndex);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -150,6 +151,29 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose, onLog
     }
   };
 
+  const handleDeleteStory = async () => {
+    const user = authService.getCurrentUser();
+    if (!user || user.id !== currentStory.user_id) return;
+
+    if (!confirm('Удалить эту Story?')) return;
+
+    try {
+      const response = await fetch(`${STORIES_API}?story_id=${currentStory.id}`, {
+        method: 'DELETE',
+        headers: {
+          'X-User-Id': user.id,
+        },
+      });
+
+      if (response.ok) {
+        onStoryDeleted?.();
+        onClose();
+      }
+    } catch (err) {
+      console.error('Delete error:', err);
+    }
+  };
+
   const getTimeAgo = (timestamp: string) => {
     const now = new Date();
     const created = new Date(timestamp);
@@ -220,6 +244,14 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose, onLog
               >
                 <Icon name={isPaused ? 'Play' : 'Pause'} size={18} className="text-white" />
               </button>
+              {authService.getCurrentUser()?.id === currentStory.user_id && (
+                <button
+                  onClick={handleDeleteStory}
+                  className="h-10 w-10 rounded-full bg-red-500/30 backdrop-blur-sm flex items-center justify-center hover:bg-red-500/50 transition-colors"
+                >
+                  <Icon name="Trash2" size={18} className="text-white" />
+                </button>
+              )}
               <button
                 onClick={onClose}
                 className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors"

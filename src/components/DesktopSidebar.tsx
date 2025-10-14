@@ -32,11 +32,17 @@ export default function DesktopSidebar({
     { id: 'profile', icon: 'User', label: 'Профиль' },
   ];
 
+  const protectedItems = ['search', 'following', 'live', 'upload', 'profile'];
+
   const handleItemClick = (id: string) => {
+    if (protectedItems.includes(id) && !currentUser) {
+      onLoginClick();
+      return;
+    }
+    
     if (id === 'live') {
       onLiveClick();
     } else if (id === 'following') {
-      // Пока не реализовано
       onTabChange('feed');
     } else {
       onTabChange(id);

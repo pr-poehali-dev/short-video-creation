@@ -62,7 +62,12 @@ export default function MainLayout({
         {children}
 
         {!isDesktop && (
-          <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
+          <BottomNav 
+            activeTab={activeTab} 
+            onTabChange={onTabChange}
+            currentUser={currentUser}
+            onLoginRequired={onLoginClick}
+          />
         )}
       </div>
 

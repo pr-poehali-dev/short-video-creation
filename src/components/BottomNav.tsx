@@ -6,11 +6,23 @@ type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'mes
 interface BottomNavProps {
   activeTab: NavItem;
   onTabChange: (tab: NavItem) => void;
+  currentUser: any;
+  onLoginRequired: () => void;
 }
 
-export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+export default function BottomNav({ activeTab, onTabChange, currentUser, onLoginRequired }: BottomNavProps) {
   const [notificationCount] = useState(3);
   const [messageCount] = useState(2);
+
+  const protectedItems: NavItem[] = ['search', 'upload', 'messages', 'profile'];
+
+  const handleNavClick = (tab: NavItem) => {
+    if (protectedItems.includes(tab) && !currentUser) {
+      onLoginRequired();
+      return;
+    }
+    onTabChange(tab);
+  };
 
   const navItems: { id: NavItem; icon: string; label: string }[] = [
     { id: 'feed', icon: 'Home', label: 'Лента' },
@@ -28,7 +40,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           {navItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => handleNavClick(item.id)}
               className={`group relative flex flex-col items-center gap-0.5 px-1 md:px-2 py-0.5 md:py-1 transition-all active:scale-95 ${
                 activeTab === item.id ? 'scale-105' : 'scale-100 opacity-70'
               }`}

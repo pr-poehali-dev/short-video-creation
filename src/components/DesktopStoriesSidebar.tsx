@@ -87,7 +87,7 @@ export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory }: D
                 key={video.id}
                 className="group cursor-pointer"
               >
-                <div className="relative aspect-[9/16] w-full rounded-lg overflow-hidden mb-2 bg-card/20">
+                <div className="relative w-[150px] h-[200px] rounded-lg overflow-hidden mb-2 bg-card/20">
                   <img
                     src={video.thumbnail}
                     alt={video.title}

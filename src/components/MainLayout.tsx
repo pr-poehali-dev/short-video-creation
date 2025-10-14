@@ -19,6 +19,7 @@ interface MainLayoutProps {
   onLoginClick: () => void;
   onLogout: () => void;
   children: ReactNode;
+  stories?: any[];
 }
 
 export default function MainLayout({
@@ -34,6 +35,7 @@ export default function MainLayout({
   onLoginClick,
   onLogout,
   children,
+  stories,
 }: MainLayoutProps) {
   return (
     <div className="relative h-screen w-full overflow-hidden bg-background flex">
@@ -75,6 +77,7 @@ export default function MainLayout({
         <DesktopStoriesSidebar
           onStoryClick={onStoryClick}
           onCreateStory={onCreateStory}
+          stories={stories}
         />
       )}
     </div>

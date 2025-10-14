@@ -2,63 +2,61 @@ import { useState, useEffect, useRef } from 'react';
 import Icon from '@/components/ui/icon';
 import { authService } from '@/lib/auth';
 
-interface StoryContent {
+interface Story {
   id: number;
-  type: 'image' | 'video';
-  url: string;
-  duration: number;
+  user_id: string;
+  username: string;
+  image_url: string;
+  created_at: string;
+  expires_at: string;
+  views_count: number;
+  likes_count: number;
+  has_viewed?: boolean;
+  is_liked?: boolean;
 }
 
 interface StoryViewerProps {
-  stories: Array<{
-    id: number;
-    username: string;
-    avatar: string;
-    isLive?: boolean;
-    hasViewed: boolean;
-  }>;
+  stories: Story[];
   initialStoryIndex: number;
   onClose: () => void;
   onLoginRequired?: () => void;
 }
 
-const mockStoryContent: StoryContent[] = [
-  {
-    id: 1,
-    type: 'image',
-    url: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg',
-    duration: 5000,
-  },
-  {
-    id: 2,
-    type: 'video',
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    duration: 10000,
-  },
-];
+const STORIES_API = 'https://functions.poehali.dev/28f82b7d-ad37-41a0-b378-05240f106feb';
 
 export default function StoryViewer({ stories, initialStoryIndex, onClose, onLoginRequired }: StoryViewerProps) {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(initialStoryIndex);
-  const [currentContentIndex, setCurrentContentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [replyText, setReplyText] = useState('');
-  const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(324);
-  const [views] = useState(1200);
+  const [localStories, setLocalStories] = useState(stories);
   const progressIntervalRef = useRef<NodeJS.Timeout>();
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const currentStory = stories[currentStoryIndex];
-  const currentContent = mockStoryContent[currentContentIndex];
+  const currentStory = localStories[currentStoryIndex];
+  const STORY_DURATION = 5000;
 
   useEffect(() => {
-    if (isPaused || currentStory.isLive) return;
+    const user = authService.getCurrentUser();
+    if (user && currentStory) {
+      fetch(STORIES_API, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-User-Id': user.id,
+        },
+        body: JSON.stringify({
+          story_id: currentStory.id,
+          action: 'view',
+        }),
+      }).catch(err => console.error('View error:', err));
+    }
+  }, [currentStory?.id]);
 
-    const duration = currentContent.duration;
+  useEffect(() => {
+    if (isPaused) return;
+
     const intervalTime = 50;
-    const increment = (intervalTime / duration) * 100;
+    const increment = (intervalTime / STORY_DURATION) * 100;
 
     progressIntervalRef.current = setInterval(() => {
       setProgress((prev) => {
@@ -75,15 +73,11 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose, onLog
         clearInterval(progressIntervalRef.current);
       }
     };
-  }, [currentContentIndex, currentStoryIndex, isPaused, currentStory.isLive]);
+  }, [currentStoryIndex, isPaused]);
 
   const handleNext = () => {
-    if (currentContentIndex < mockStoryContent.length - 1) {
-      setCurrentContentIndex(currentContentIndex + 1);
-      setProgress(0);
-    } else if (currentStoryIndex < stories.length - 1) {
+    if (currentStoryIndex < localStories.length - 1) {
       setCurrentStoryIndex(currentStoryIndex + 1);
-      setCurrentContentIndex(0);
       setProgress(0);
     } else {
       onClose();
@@ -91,25 +85,57 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose, onLog
   };
 
   const handlePrevious = () => {
-    if (currentContentIndex > 0) {
-      setCurrentContentIndex(currentContentIndex - 1);
-      setProgress(0);
-    } else if (currentStoryIndex > 0) {
+    if (currentStoryIndex > 0) {
       setCurrentStoryIndex(currentStoryIndex - 1);
-      setCurrentContentIndex(mockStoryContent.length - 1);
       setProgress(0);
     }
   };
 
   const handlePauseToggle = () => {
     setIsPaused(!isPaused);
-    if (videoRef.current) {
-      if (isPaused) {
-        videoRef.current.play();
-      } else {
-        videoRef.current.pause();
-      }
+  };
+
+  const handleLike = async () => {
+    const user = authService.getCurrentUser();
+    if (!user) {
+      onLoginRequired?.();
+      return;
     }
+
+    const action = currentStory.is_liked ? 'unlike' : 'like';
+    
+    const updatedStories = [...localStories];
+    const story = updatedStories[currentStoryIndex];
+    story.is_liked = !story.is_liked;
+    story.likes_count += story.is_liked ? 1 : -1;
+    setLocalStories(updatedStories);
+
+    try {
+      await fetch(STORIES_API, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-User-Id': user.id,
+        },
+        body: JSON.stringify({
+          story_id: currentStory.id,
+          action,
+        }),
+      });
+    } catch (err) {
+      console.error('Like error:', err);
+      story.is_liked = !story.is_liked;
+      story.likes_count += story.is_liked ? 1 : -1;
+      setLocalStories([...updatedStories]);
+    }
+  };
+
+  const handleReplyClick = () => {
+    if (!authService.getCurrentUser()) {
+      onLoginRequired?.();
+      return;
+    }
+    setShowReplyInput(true);
   };
 
   const handleSendReply = () => {
@@ -124,108 +150,76 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose, onLog
     }
   };
 
-  const handleLike = () => {
-    if (!authService.getCurrentUser()) {
-      onLoginRequired?.();
-      return;
-    }
-    if (isLiked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-    }
-    setIsLiked(!isLiked);
-  };
-
-  const handleReplyClick = () => {
-    if (!authService.getCurrentUser()) {
-      onLoginRequired?.();
-      return;
-    }
-    setShowReplyInput(true);
+  const getTimeAgo = (timestamp: string) => {
+    const now = new Date();
+    const created = new Date(timestamp);
+    const diffMs = now.getTime() - created.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    
+    if (diffMins < 60) return `${diffMins}м назад`;
+    if (diffHours < 24) return `${diffHours}ч назад`;
+    return `${Math.floor(diffHours / 24)}д назад`;
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
       <div className="relative w-full max-w-[min(100vw,56.25vh)] h-full max-h-[min(100vh,177.78vw)] aspect-[9/16]">
-        {currentContent.type === 'image' ? (
-          <img
-            src={currentContent.url}
-            alt="Story"
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <video
-            ref={videoRef}
-            src={currentContent.url}
-            className="h-full w-full object-cover"
-            autoPlay
-            loop={currentStory.isLive}
-            playsInline
-          />
-        )}
+        <img
+          src={currentStory.image_url}
+          alt="Story"
+          className="h-full w-full object-cover"
+        />
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
 
-        {!currentStory.isLive && (
-          <div className="absolute top-0 left-0 right-0 flex gap-1 px-2 pt-2">
-            {mockStoryContent.map((_, index) => (
+        <div className="absolute top-0 left-0 right-0 flex gap-1 px-2 pt-2">
+          {localStories.map((_, index) => (
+            <div
+              key={index}
+              className="flex-1 h-0.5 bg-white/30 rounded-full overflow-hidden"
+            >
               <div
-                key={index}
-                className="flex-1 h-0.5 bg-white/30 rounded-full overflow-hidden"
-              >
-                <div
-                  className="h-full bg-white transition-all duration-100"
-                  style={{
-                    width: `${
-                      index < currentContentIndex
-                        ? 100
-                        : index === currentContentIndex
-                        ? progress
-                        : 0
-                    }%`,
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+                className="h-full bg-white transition-all duration-100"
+                style={{
+                  width: `${
+                    index < currentStoryIndex
+                      ? 100
+                      : index === currentStoryIndex
+                      ? progress
+                      : 0
+                  }%`,
+                }}
+              />
+            </div>
+          ))}
+        </div>
 
         <div className="absolute top-4 left-0 right-0 px-4 pt-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full border-2 border-white overflow-hidden">
-                <img
-                  src={currentStory.avatar}
-                  alt={currentStory.username}
-                  className="h-full w-full object-cover"
-                />
+              <div className="h-10 w-10 rounded-full border-2 border-white overflow-hidden bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+                <span className="text-white font-bold text-sm">
+                  {currentStory.username.slice(0, 2).toUpperCase()}
+                </span>
               </div>
               <div>
                 <p className="font-['Orbitron'] text-sm font-bold text-white">
                   {currentStory.username}
                 </p>
                 <p className="text-xs text-white/70">
-                  {currentStory.isLive ? 'В эфире' : '2ч назад'}
+                  {getTimeAgo(currentStory.created_at)}
                 </p>
               </div>
-              {currentStory.isLive && (
-                <div className="px-2 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 animate-pulse-glow">
-                  <div className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-                  <span className="text-xs font-bold text-white uppercase">Эфир</span>
-                </div>
-              )}
             </div>
 
             <div className="flex items-center gap-2">
-              {!currentStory.isLive && (
-                <button
-                  onClick={handlePauseToggle}
-                  className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors"
-                >
-                  <Icon name={isPaused ? 'Play' : 'Pause'} size={18} className="text-white" />
-                </button>
-              )}
+              <button
+                onClick={handlePauseToggle}
+                className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors"
+              >
+                <Icon name={isPaused ? 'Play' : 'Pause'} size={18} className="text-white" />
+              </button>
               <button
                 onClick={onClose}
                 className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors"
@@ -241,24 +235,28 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose, onLog
             <div className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
               <Icon name="Eye" size={20} className="text-white" />
             </div>
-            <span className="text-xs font-bold text-white">{views > 999 ? `${(views / 1000).toFixed(1)}K` : views}</span>
+            <span className="text-xs font-bold text-white">
+              {currentStory.views_count > 999 
+                ? `${(currentStory.views_count / 1000).toFixed(1)}K` 
+                : currentStory.views_count}
+            </span>
           </div>
           <button 
             onClick={handleLike}
             className="flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95"
           >
             <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
-              isLiked 
+              currentStory.is_liked 
                 ? 'bg-gradient-to-br from-secondary to-accent' 
                 : 'bg-black/30 backdrop-blur-sm'
             } transition-all`}>
               <Icon 
                 name="Heart" 
                 size={20} 
-                className={isLiked ? 'fill-current text-white' : 'text-white'} 
+                className={currentStory.is_liked ? 'fill-current text-white' : 'text-white'} 
               />
             </div>
-            <span className="text-xs font-bold text-white">{likes}</span>
+            <span className="text-xs font-bold text-white">{currentStory.likes_count}</span>
           </button>
         </div>
 

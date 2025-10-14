@@ -3,6 +3,7 @@ import UploadVideo from '@/components/UploadVideo';
 import MessagesScreen from '@/components/MessagesScreen';
 import UserProfile from '@/components/UserProfile';
 import StoryViewer from '@/components/StoryViewer';
+import StoryUpload from '@/components/StoryUpload';
 import LiveScreen from '@/components/LiveScreen';
 import AchievementsScreen from '@/components/AchievementsScreen';
 import MonetizationDashboard from '@/components/MonetizationDashboard';
@@ -31,6 +32,8 @@ export default function Index() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [selectedUserProfile, setSelectedUserProfile] = useState<string | null>(null);
   const [selectedStoryIndex, setSelectedStoryIndex] = useState<number | null>(null);
+  const [showStoryUpload, setShowStoryUpload] = useState(false);
+  const [stories, setStories] = useState<any[]>([]);
   const [showLiveScreen, setShowLiveScreen] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showMonetization, setShowMonetization] = useState(false);
@@ -53,7 +56,21 @@ export default function Index() {
     if (user) {
       setCurrentUser(user);
     }
+    loadStories();
   }, []);
+
+  const loadStories = async () => {
+    try {
+      const user = authService.getCurrentUser();
+      const response = await fetch('https://functions.poehali.dev/28f82b7d-ad37-41a0-b378-05240f106feb', {
+        headers: user ? { 'X-User-Id': user.id } : {},
+      });
+      const data = await response.json();
+      setStories(data.stories || []);
+    } catch (err) {
+      console.error('Failed to load stories:', err);
+    }
+  };
 
   const handleAuthSuccess = () => {
     const user = authService.getCurrentUser();
@@ -147,16 +164,20 @@ export default function Index() {
         onAuthSuccess={handleAuthSuccess}
       />
 
-      {selectedStoryIndex !== null ? (
+      {showStoryUpload && (
+        <StoryUpload
+          onClose={() => setShowStoryUpload(false)}
+          onUploadSuccess={loadStories}
+          onLoginRequired={() => {
+            setShowStoryUpload(false);
+            setShowAuthModal(true);
+          }}
+        />
+      )}
+
+      {selectedStoryIndex !== null && stories.length > 0 ? (
         <StoryViewer
-          stories={[
-            { id: 1, username: 'CyberCreator', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg', hasViewed: false, isLive: true },
-            { id: 2, username: 'NeonDancer', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/f6887c05-c23f-48ba-9c37-f82ecfc71348.jpg', hasViewed: false, isLive: true },
-            { id: 3, username: 'TechBeats', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/b7be10cb-cafa-4dee-b9f7-6f4194b5c3c5.jpg', hasViewed: false },
-            { id: 4, username: 'DigitalArt', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/fb14cd1e-e818-437f-8c4a-78714db04196.jpg', hasViewed: true },
-            { id: 5, username: 'FutureVibes', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/f6887c05-c23f-48ba-9c37-f82ecfc71348.jpg', hasViewed: true },
-            { id: 6, username: 'ArtistPro', avatar: 'https://cdn.poehali.dev/projects/00d5c065-a0cf-4f74-bc8f-bc3cb47dc2bc/files/b7be10cb-cafa-4dee-b9f7-6f4194b5c3c5.jpg', hasViewed: false },
-          ]}
+          stories={stories}
           initialStoryIndex={selectedStoryIndex}
           onClose={() => setSelectedStoryIndex(null)}
           onLoginRequired={() => {
@@ -173,7 +194,14 @@ export default function Index() {
         onLeaderboardClick={() => setShowLeaderboard(true)}
         onChallengesClick={() => setShowChallenges(true)}
         onStoryClick={(storyIndex) => setSelectedStoryIndex(storyIndex)}
-        onCreateStory={() => console.log('Create story')}
+        onCreateStory={() => {
+          if (currentUser) {
+            setShowStoryUpload(true);
+          } else {
+            setShowAuthModal(true);
+          }
+        }}
+        stories={stories}
         currentUser={currentUser}
         onLoginClick={() => setShowAuthModal(true)}
         onLogout={handleLogout}
@@ -186,7 +214,14 @@ export default function Index() {
           onVideoIndexChange={setCurrentVideoIndex}
           onProfileClick={setSelectedUserProfile}
           onStoryClick={(storyIndex) => setSelectedStoryIndex(storyIndex)}
-          onCreateStory={() => console.log('Create story')}
+          onCreateStory={() => {
+            if (currentUser) {
+              setShowStoryUpload(true);
+            } else {
+              setShowAuthModal(true);
+            }
+          }}
+          stories={stories}
           onLiveClick={() => setShowLiveScreen(true)}
           onLoginRequired={() => setShowAuthModal(true)}
         />

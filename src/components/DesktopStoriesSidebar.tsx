@@ -11,6 +11,7 @@ interface Story {
 interface DesktopStoriesSidebarProps {
   onStoryClick: (storyIndex: number) => void;
   onCreateStory: () => void;
+  stories?: any[];
 }
 
 const mockStories: Story[] = [
@@ -73,7 +74,8 @@ const mockRecommendedVideos = [
   },
 ];
 
-export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory }: DesktopStoriesSidebarProps) {
+export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory, stories = [] }: DesktopStoriesSidebarProps) {
+  const displayStories = stories.length > 0 ? stories : mockStories;
   return (
     <div className="flex flex-col w-80 h-screen bg-background fixed right-0 top-0 overflow-y-auto scrollbar-hide">
       <div className="p-4 space-y-4">
@@ -136,7 +138,7 @@ export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory }: D
             </button>
           </div>
           <div className="space-y-3">
-            {mockStories.map((story, index) => (
+            {displayStories.map((story, index) => (
               <button
                 key={story.id}
                 onClick={() => onStoryClick(index)}
@@ -150,12 +152,24 @@ export default function DesktopStoriesSidebar({ onStoryClick, onCreateStory }: D
                         : 'bg-gradient-to-br from-primary via-secondary to-accent'
                     }`}
                   >
-                    <div className="h-full w-full rounded-full border-2 border-background overflow-hidden">
-                      <img
-                        src={story.avatar}
-                        alt={story.username}
-                        className="h-full w-full object-cover"
-                      />
+                    <div className="h-full w-full rounded-full border-2 border-background overflow-hidden bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+                      {story.image_url ? (
+                        <img
+                          src={story.image_url}
+                          alt={story.username}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : story.avatar ? (
+                        <img
+                          src={story.avatar}
+                          alt={story.username}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-white font-bold text-sm">
+                          {story.username.slice(0, 2).toUpperCase()}
+                        </span>
+                      )}
                     </div>
                   </div>
                   {story.isLive && (

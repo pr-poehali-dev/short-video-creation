@@ -24,6 +24,7 @@ interface FeedTabProps {
   onCreateStory: () => void;
   onLiveClick: () => void;
   onLoginRequired?: () => void;
+  stories?: any[];
 }
 
 export default function FeedTab({
@@ -36,6 +37,7 @@ export default function FeedTab({
   onCreateStory,
   onLiveClick,
   onLoginRequired,
+  stories,
 }: FeedTabProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
@@ -86,6 +88,7 @@ export default function FeedTab({
             <StoriesBar
               onStoryClick={onStoryClick}
               onCreateStory={onCreateStory}
+              stories={stories}
             />
           </div>
           <button

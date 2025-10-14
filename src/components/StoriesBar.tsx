@@ -12,6 +12,7 @@ interface Story {
 interface StoriesBarProps {
   onStoryClick: (storyIndex: number) => void;
   onCreateStory: () => void;
+  stories?: any[];
 }
 
 const mockStories: Story[] = [
@@ -49,7 +50,8 @@ const mockStories: Story[] = [
   },
 ];
 
-export default function StoriesBar({ onStoryClick, onCreateStory }: StoriesBarProps) {
+export default function StoriesBar({ onStoryClick, onCreateStory, stories = [] }: StoriesBarProps) {
+  const displayStories = stories.length > 0 ? stories : mockStories;
   return (
     <div className="w-full bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="flex gap-1.5 md:gap-2 overflow-x-auto scrollbar-hide px-2 md:px-3 py-1 md:py-1.5">
@@ -65,7 +67,7 @@ export default function StoriesBar({ onStoryClick, onCreateStory }: StoriesBarPr
           <span className="text-[8px] md:text-[10px] text-muted-foreground font-medium">Создать</span>
         </button>
 
-        {mockStories.map((story, index) => (
+        {displayStories.map((story, index) => (
           <button
             key={story.id}
             onClick={() => onStoryClick(index)}
@@ -79,12 +81,24 @@ export default function StoriesBar({ onStoryClick, onCreateStory }: StoriesBarPr
                     : 'bg-gradient-to-br from-primary via-secondary to-accent'
                 }`}
               >
-                <div className="h-full w-full rounded-full border-2 border-background overflow-hidden">
-                  <img
-                    src={story.avatar}
-                    alt={story.username}
-                    className="h-full w-full object-cover"
-                  />
+                <div className="h-full w-full rounded-full border-2 border-background overflow-hidden bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+                  {story.image_url ? (
+                    <img
+                      src={story.image_url}
+                      alt={story.username}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : story.avatar ? (
+                    <img
+                      src={story.avatar}
+                      alt={story.username}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-white font-bold text-xs">
+                      {story.username.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
                 </div>
               </div>
               {story.isLive && (

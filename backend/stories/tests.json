@@ -1,0 +1,45 @@
+{
+  "tests": [
+    {
+      "name": "Get all stories without auth",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "stories": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create story with auth",
+      "method": "POST",
+      "path": "/",
+      "headers": {
+        "X-User-Id": "test-user-123"
+      },
+      "body": {
+        "username": "TestUser",
+        "image_url": "https://example.com/image.jpg"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "story": "object"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create story without auth",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "username": "TestUser",
+        "image_url": "https://example.com/image.jpg"
+      },
+      "expectedStatus": 401,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

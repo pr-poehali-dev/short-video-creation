@@ -1,5 +1,6 @@
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
+import { authService, User } from '@/lib/auth';
 
 interface DesktopSidebarProps {
   activeTab: string;
@@ -7,6 +8,9 @@ interface DesktopSidebarProps {
   onLiveClick: () => void;
   onLeaderboardClick: () => void;
   onChallengesClick: () => void;
+  onLoginClick: () => void;
+  currentUser: User | null;
+  onLogout: () => void;
 }
 
 export default function DesktopSidebar({ 
@@ -14,7 +18,10 @@ export default function DesktopSidebar({
   onTabChange, 
   onLiveClick,
   onLeaderboardClick,
-  onChallengesClick 
+  onChallengesClick,
+  onLoginClick,
+  currentUser,
+  onLogout
 }: DesktopSidebarProps) {
   const menuItems = [
     { id: 'feed', icon: 'Home', label: 'Рекомендации' },
@@ -93,11 +100,33 @@ export default function DesktopSidebar({
       </nav>
 
       <div className="pt-4 border-t border-border">
-        <Button 
-          className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 font-['Orbitron'] font-bold"
-        >
-          Войти
-        </Button>
+        {currentUser ? (
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 px-4 py-3 bg-card/50 rounded-lg">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                <span className="text-white font-bold">{currentUser.username[0].toUpperCase()}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm truncate">{currentUser.username}</p>
+                <p className="text-xs text-muted-foreground truncate">{currentUser.email}</p>
+              </div>
+            </div>
+            <Button 
+              onClick={onLogout}
+              variant="outline"
+              className="w-full"
+            >
+              Выйти
+            </Button>
+          </div>
+        ) : (
+          <Button 
+            onClick={onLoginClick}
+            className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 font-['Orbitron'] font-bold"
+          >
+            Войти
+          </Button>
+        )}
       </div>
 
       <div className="pt-4 space-y-2">

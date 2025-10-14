@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import BottomNav from '@/components/BottomNav';
 import DesktopSidebar from '@/components/DesktopSidebar';
 import DesktopStoriesSidebar from '@/components/DesktopStoriesSidebar';
+import { User } from '@/lib/auth';
 
 type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
 
@@ -14,6 +15,9 @@ interface MainLayoutProps {
   onChallengesClick: () => void;
   onStoryClick: (story: any) => void;
   onCreateStory: () => void;
+  currentUser: User | null;
+  onLoginClick: () => void;
+  onLogout: () => void;
   children: ReactNode;
 }
 
@@ -26,6 +30,9 @@ export default function MainLayout({
   onChallengesClick,
   onStoryClick,
   onCreateStory,
+  currentUser,
+  onLoginClick,
+  onLogout,
   children,
 }: MainLayoutProps) {
   return (
@@ -37,6 +44,9 @@ export default function MainLayout({
           onLiveClick={onLiveClick}
           onLeaderboardClick={onLeaderboardClick}
           onChallengesClick={onChallengesClick}
+          onLoginClick={onLoginClick}
+          currentUser={currentUser}
+          onLogout={onLogout}
         />
       )}
 

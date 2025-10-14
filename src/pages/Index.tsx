@@ -18,19 +18,15 @@ import SearchTab from '@/components/tabs/SearchTab';
 import TrendsTab from '@/components/tabs/TrendsTab';
 import NotificationsTab from '@/components/tabs/NotificationsTab';
 import ProfileTab from '@/components/tabs/ProfileTab';
+import AuthModal from '@/components/AuthModal';
 import { mockVideos } from '@/data/mockData';
+import { authService, User } from '@/lib/auth';
 
 type NavItem = 'feed' | 'search' | 'upload' | 'notifications' | 'profile' | 'messages';
 
-interface User {
-  email: string;
-  username: string;
-}
-
 export default function Index() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [authMode, setAuthMode] = useState<'landing' | 'login' | 'register'>('landing');
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [activeTab, setActiveTab] = useState<NavItem>('feed');
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [selectedUserProfile, setSelectedUserProfile] = useState<string | null>(null);
@@ -53,61 +49,25 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('peeky_user');
-    const savedAuth = localStorage.getItem('peeky_auth');
-    
-    if (savedUser && savedAuth === 'true') {
-      try {
-        const user = JSON.parse(savedUser);
-        setCurrentUser(user);
-        setIsAuthenticated(true);
-      } catch (e) {
-        localStorage.removeItem('peeky_user');
-        localStorage.removeItem('peeky_auth');
-      }
+    const user = authService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
     }
   }, []);
 
-  const handleAuth = (email: string, password: string, username?: string) => {
-    const user: User = {
-      email,
-      username: username || email.split('@')[0],
-    };
-    
-    setCurrentUser(user);
-    setIsAuthenticated(true);
-    localStorage.setItem('peeky_user', JSON.stringify(user));
-    localStorage.setItem('peeky_auth', 'true');
-    setAuthMode('landing');
+  const handleAuthSuccess = () => {
+    const user = authService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
+    }
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    authService.logout();
     setCurrentUser(null);
-    localStorage.removeItem('peeky_user');
-    localStorage.removeItem('peeky_auth');
-    setAuthMode('landing');
   };
 
-  if (!isAuthenticated) {
-    if (authMode === 'landing') {
-      return (
-        <LandingPage
-          onLogin={() => setAuthMode('login')}
-          onRegister={() => setAuthMode('register')}
-        />
-      );
-    }
 
-    return (
-      <AuthForm
-        mode={authMode === 'login' ? 'login' : 'register'}
-        onSubmit={handleAuth}
-        onSwitchMode={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
-        onBack={() => setAuthMode('landing')}
-      />
-    );
-  }
 
   if (showLeaderboard) {
     return (
@@ -187,16 +147,26 @@ export default function Index() {
   }
 
   return (
-    <MainLayout
-      isDesktop={isDesktop}
-      activeTab={activeTab}
-      onTabChange={setActiveTab}
-      onLiveClick={() => setShowLiveScreen(true)}
-      onLeaderboardClick={() => setShowLeaderboard(true)}
-      onChallengesClick={() => setShowChallenges(true)}
-      onStoryClick={(story) => setSelectedStory(story)}
-      onCreateStory={() => console.log('Create story')}
-    >
+    <>
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
+      
+      <MainLayout
+        isDesktop={isDesktop}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onLiveClick={() => setShowLiveScreen(true)}
+        onLeaderboardClick={() => setShowLeaderboard(true)}
+        onChallengesClick={() => setShowChallenges(true)}
+        onStoryClick={(story) => setSelectedStory(story)}
+        onCreateStory={() => console.log('Create story')}
+        currentUser={currentUser}
+        onLoginClick={() => setShowAuthModal(true)}
+        onLogout={handleLogout}
+      >
       {activeTab === 'feed' && (
         <FeedTab
           isDesktop={isDesktop}
@@ -234,6 +204,7 @@ export default function Index() {
       )}
 
       {activeTab === 'messages' && <MessagesScreen />}
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 }

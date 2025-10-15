@@ -188,7 +188,7 @@ export default function StoryViewer({ stories, initialStoryIndex, onClose, onLog
 
   return (
     <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-      <div className="relative w-full max-w-[min(100vw,56.25vh)] h-full max-h-[min(100vh,177.78vw)] aspect-[9/16]">
+      <div className="relative w-full h-full lg:w-auto lg:h-full lg:aspect-[9/16] lg:max-w-[min(100vw,56.25vh)] lg:max-h-screen">
         <img
           src={currentStory.image_url}
           alt="Story"

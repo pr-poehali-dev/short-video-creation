@@ -82,23 +82,14 @@ export default function FeedTab({
 
   return (
     <>
-      {!isDesktop && (
-        <>
-          <div className="flex-shrink-0 pt-10 md:pt-12 z-30">
-            <StoriesBar
-              onStoryClick={onStoryClick}
-              onCreateStory={onCreateStory}
-              stories={stories}
-            />
-          </div>
-          <button
-            onClick={onLiveClick}
-            className="absolute top-[94px] md:top-[100px] right-3 md:right-4 z-30 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center gap-1 md:gap-1.5 hover:opacity-90 transition-opacity animate-pulse-glow"
-          >
-            <Icon name="Radio" size={14} className="text-white md:w-4 md:h-4" />
-            <span className="text-[9px] md:text-xs font-bold text-white uppercase">Эфир</span>
-          </button>
-        </>
+      {isDesktop && (
+        <div className="flex-shrink-0 pt-10 md:pt-12 z-30">
+          <StoriesBar
+            onStoryClick={onStoryClick}
+            onCreateStory={onCreateStory}
+            stories={stories}
+          />
+        </div>
       )}
       <div 
         ref={containerRef}

@@ -82,15 +82,6 @@ export default function FeedTab({
 
   return (
     <>
-      {isDesktop && (
-        <div className="flex-shrink-0 pt-10 md:pt-12 z-30">
-          <StoriesBar
-            onStoryClick={onStoryClick}
-            onCreateStory={onCreateStory}
-            stories={stories}
-          />
-        </div>
-      )}
       <div 
         ref={containerRef}
         className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide"

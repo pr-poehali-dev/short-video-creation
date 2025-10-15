@@ -228,23 +228,26 @@ export default function VideoCard({
                   {author.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1 cursor-pointer" onClick={onProfileClick}>
+              <div className="flex-1 flex items-center gap-2 cursor-pointer" onClick={onProfileClick}>
                 <p className="font-['Orbitron'] text-xs md:text-sm font-semibold text-foreground hover:text-primary transition-colors">
                   {author}
                 </p>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsFollowing(!isFollowing);
+                  }}
+                  size="sm"
+                  variant={isFollowing ? 'outline' : 'default'}
+                  className={`rounded-full font-['Orbitron'] text-[10px] md:text-xs px-3 md:px-4 h-7 md:h-8 ${
+                    isFollowing
+                      ? 'border-primary text-primary hover:bg-primary/10'
+                      : 'bg-gradient-to-r from-primary to-secondary hover:opacity-90'
+                  }`}
+                >
+                  {isFollowing ? 'Подписка' : 'Подписаться'}
+                </Button>
               </div>
-              <Button
-                onClick={() => setIsFollowing(!isFollowing)}
-                size="sm"
-                variant={isFollowing ? 'outline' : 'default'}
-                className={`rounded-full font-['Orbitron'] text-[10px] md:text-xs px-3 md:px-4 h-7 md:h-8 ${
-                  isFollowing
-                    ? 'border-primary text-primary hover:bg-primary/10'
-                    : 'bg-gradient-to-r from-primary to-secondary hover:opacity-90'
-                }`}
-              >
-                {isFollowing ? 'Подписка' : 'Подписаться'}
-              </Button>
             </div>
             <p className="text-xs md:text-sm text-foreground/90">{parseDescription(description)}</p>
           </div>
